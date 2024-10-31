@@ -31,11 +31,11 @@ import org.grails.forge.feature.build.gradle.templates.buildGradle;
 import org.grails.forge.feature.build.gradle.templates.buildSrcBuildGradle;
 import org.grails.forge.feature.build.gradle.templates.gradleProperties;
 import org.grails.forge.feature.build.gradle.templates.settingsGradle;
+import org.grails.forge.feature.build.gradle.templates.gradleWrapperProperties;
 import org.grails.forge.options.BuildTool;
 import org.grails.forge.options.Options;
 import org.grails.forge.template.BinaryTemplate;
 import org.grails.forge.template.RockerTemplate;
-import org.grails.forge.template.URLTemplate;
 
 import java.util.Set;
 import java.util.function.Function;
@@ -63,7 +63,6 @@ public class Gradle implements BuildFeature {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 
         generatorContext.addTemplate("gradleWrapperJar", new BinaryTemplate(WRAPPER_JAR, classLoader.getResource(WRAPPER_JAR)));
-        generatorContext.addTemplate("gradleWrapperProperties", new URLTemplate(WRAPPER_PROPS, classLoader.getResource(WRAPPER_PROPS)));
         generatorContext.addTemplate("gradleWrapper", new BinaryTemplate("gradlew", classLoader.getResource("gradle/gradlew"), true));
         generatorContext.addTemplate("gradleWrapperBat", new BinaryTemplate("gradlew.bat", classLoader.getResource("gradle/gradlew.bat"), false));
 
@@ -96,6 +95,8 @@ public class Gradle implements BuildFeature {
         generatorContext.addTemplate("projectProperties", new RockerTemplate("gradle.properties", gradleProperties.template(generatorContext.getBuildProperties().getProperties())));
         String settingsFile = "settings.gradle";
         generatorContext.addTemplate("gradleSettings", new RockerTemplate(settingsFile, settingsGradle.template(generatorContext.getProject(), build, coordinateResolver, generatorContext.getFeatures())));
+
+        generatorContext.addTemplate("gradleWrapperProperties", new RockerTemplate(WRAPPER_PROPS, gradleWrapperProperties.template(generatorContext.getProject(), build, coordinateResolver, generatorContext.getFeatures())));
     }
 
     private void configureDefaultGradleProps(GeneratorContext generatorContext) {

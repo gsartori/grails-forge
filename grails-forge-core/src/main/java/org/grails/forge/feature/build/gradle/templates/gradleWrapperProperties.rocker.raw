@@ -1,0 +1,26 @@
+@import java.util.function.Function
+@import org.grails.forge.application.Project
+@import org.grails.forge.build.dependencies.CoordinateResolver
+@import org.grails.forge.build.dependencies.Coordinate
+@import org.grails.forge.build.gradle.GradleBuild
+@import org.grails.forge.build.gradle.GradlePlugin
+@import org.grails.forge.feature.Features
+
+@args (
+Project project,
+GradleBuild gradleBuild,
+Function<String, Coordinate> coordinateResolver,
+Features features)
+
+distributionBase=GRADLE_USER_HOME
+distributionPath=wrapper/dists
+@if(features.contains("geb-with-webdriver-binaries")) {
+# geb-with-webdriver-binaries is limited to Gradle 8.6
+distributionUrl=https\://services.gradle.org/distributions/gradle-8.6-bin.zip
+} else {
+distributionUrl=https\://services.gradle.org/distributions/gradle-8.10.2-bin.zip
+}
+networkTimeout=10000
+validateDistributionUrl=true
+zipStoreBase=GRADLE_USER_HOME
+zipStorePath=wrapper/dists
