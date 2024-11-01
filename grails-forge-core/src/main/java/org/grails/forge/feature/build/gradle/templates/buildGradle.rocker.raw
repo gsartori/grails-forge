@@ -9,6 +9,7 @@
 @import org.grails.forge.feature.Features
 @import org.grails.forge.options.TestFramework
 @import org.grails.forge.util.VersionInfo
+@import org.grails.forge.options.JdkVersion
 
 @args (
 ApplicationType applicationType,
@@ -55,7 +56,14 @@ application {
 
 }
 
+@if(features.contains("geb-with-webdriver-binaries")) {
+// geb-with-webdriver-binaries is limited to Gradle 8.6 with max JDK 21
+compileJava.options.release = @JdkVersion.valueOf(Math.min(features.javaVersion().majorVersion(), JdkVersion.JDK_21.majorVersion())).majorVersion()
+
+} else {
 compileJava.options.release = @features.getTargetJdk()
+
+}
 
 @if (features.contains("jrebel")) {
 run {

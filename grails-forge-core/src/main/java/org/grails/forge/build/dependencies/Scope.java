@@ -39,7 +39,6 @@ public class Scope {
     public static final Scope PROFILE = new Scope(Source.MAIN, Collections.singletonList(Phase.PROFILE));
     public static final Scope INTEGRATION_TEST_IMPLEMENTATION_TEST_FIXTURES = new Scope(Source.MAIN, Collections.singletonList(Phase.INTEGRATION_TEST_IMPLEMENTATION_TEST_FIXTURES));
 
-
     @NonNull
     private Source source;
 
