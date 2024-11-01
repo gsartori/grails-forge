@@ -1,10 +1,18 @@
 package org.grails.forge.api
 
+import com.fasterxml.jackson.core.JsonParser
+import com.fasterxml.jackson.databind.ObjectMapper
+import io.micronaut.http.HttpRequest
+import io.micronaut.http.client.HttpClient
+import io.micronaut.http.client.annotation.Client
+import io.micronaut.json.tree.JsonNode
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import jakarta.inject.Inject
 import org.grails.forge.application.ApplicationType
+import org.grails.forge.options.FeatureFilter
 import org.grails.forge.options.GormImpl
 import org.grails.forge.options.JdkVersion
+import org.grails.forge.options.TestFramework
 import org.grails.forge.options.ServletImpl
 import spock.lang.Specification
 
@@ -12,17 +20,21 @@ import spock.lang.Specification
 class FeatureControllerSpec extends Specification {
 
     @Inject
-    ApplicationTypeClient client
+    ApplicationTypeClient applicationTypeClient
+
+    @Inject
+    @Client("/")
+    HttpClient httpClient
 
     void 'test list features'() {
         when:
-        List<FeatureDTO> features = client
+        List<FeatureDTO> features = applicationTypeClient
                 .features(ApplicationType.DEFAULT_OPTION,
                         RequestInfo.LOCAL,
-                        TestFramework.DEFAULT_OPTION,
-                        GormImpl.DEFAULT_OPTION,
-                        ServletImpl.DEFAULT_OPTION,
-                        JdkVersion.DEFAULT_OPTION).features
+                        new FeatureFilter(test: TestFramework.DEFAULT_OPTION,
+                        gorm: GormImpl.DEFAULT_OPTION,
+                        servlet: ServletImpl.DEFAULT_OPTION,
+                        javaVersion: JdkVersion.DEFAULT_OPTION)).features
 
         then:
         !features.isEmpty()
@@ -30,13 +42,13 @@ class FeatureControllerSpec extends Specification {
 
     void 'test community features'() {
         when:
-        List<FeatureDTO> communityFeatures = client
+        List<FeatureDTO> communityFeatures = applicationTypeClient
                 .features(ApplicationType.DEFAULT_OPTION,
                         RequestInfo.LOCAL,
-                        TestFramework.DEFAULT_OPTION,
-                        GormImpl.DEFAULT_OPTION,
-                        ServletImpl.DEFAULT_OPTION,
-                        JdkVersion.DEFAULT_OPTION).features
+                        new FeatureFilter(test: TestFramework.DEFAULT_OPTION,
+                                gorm: GormImpl.DEFAULT_OPTION,
+                                servlet: ServletImpl.DEFAULT_OPTION,
+                                javaVersion: JdkVersion.DEFAULT_OPTION)).features
                 .findAll { it.community }
 
         then:
@@ -45,12 +57,12 @@ class FeatureControllerSpec extends Specification {
 
     void 'test list features - spanish'() {
         when:
-        List<FeatureDTO> features = client
+        List<FeatureDTO> features = applicationTypeClient
                 .spanishFeatures(ApplicationType.DEFAULT_OPTION,
-                        TestFramework.DEFAULT_OPTION,
-                        GormImpl.DEFAULT_OPTION,
-                        ServletImpl.DEFAULT_OPTION,
-                        JdkVersion.DEFAULT_OPTION).features
+                        new FeatureFilter(test: TestFramework.DEFAULT_OPTION,
+                                gorm: GormImpl.DEFAULT_OPTION,
+                                servlet: ServletImpl.DEFAULT_OPTION,
+                                javaVersion: JdkVersion.DEFAULT_OPTION)).features
         def mongoGorm = features.find { it.name == 'asciidoctor' }
 
         then:
@@ -61,12 +73,12 @@ class FeatureControllerSpec extends Specification {
 
     void 'test list default features - spanish'() {
         when:
-        List<FeatureDTO> features = client
+        List<FeatureDTO> features = applicationTypeClient
                 .spanishDefaultFeatures(ApplicationType.DEFAULT_OPTION,
-                        TestFramework.DEFAULT_OPTION,
-                        GormImpl.DEFAULT_OPTION,
-                        ServletImpl.DEFAULT_OPTION,
-                        JdkVersion.DEFAULT_OPTION).features
+                        new FeatureFilter(test: TestFramework.DEFAULT_OPTION,
+                                gorm: GormImpl.DEFAULT_OPTION,
+                                servlet: ServletImpl.DEFAULT_OPTION,
+                                javaVersion: JdkVersion.DEFAULT_OPTION)).features
         def assetPipeline = features.find { it.name == 'asset-pipeline-grails' }
 
         then:
@@ -77,26 +89,26 @@ class FeatureControllerSpec extends Specification {
 
     void 'test list default features for application type'() {
         when:
-        def features = client
+        def features = applicationTypeClient
                 .defaultFeatures(ApplicationType.PLUGIN,
                         RequestInfo.LOCAL,
-                        TestFramework.DEFAULT_OPTION,
-                        GormImpl.DEFAULT_OPTION,
-                        ServletImpl.DEFAULT_OPTION,
-                        JdkVersion.DEFAULT_OPTION).features
+                        new FeatureFilter(test: TestFramework.DEFAULT_OPTION,
+                                gorm: GormImpl.DEFAULT_OPTION,
+                                servlet: ServletImpl.DEFAULT_OPTION,
+                                javaVersion: JdkVersion.DEFAULT_OPTION)).features
 
         then:
         !features.any { it.name == 'geb-with-testcontainers' }
         features.any { it.name == 'gorm-hibernate5' }
 
         when:
-        features = client
+        features = applicationTypeClient
                 .defaultFeatures(ApplicationType.DEFAULT_OPTION,
                         RequestInfo.LOCAL,
-                        TestFramework.DEFAULT_OPTION,
-                        GormImpl.DEFAULT_OPTION,
-                        ServletImpl.DEFAULT_OPTION,
-                        JdkVersion.DEFAULT_OPTION).features
+                        new FeatureFilter(test: TestFramework.DEFAULT_OPTION,
+                                gorm: GormImpl.DEFAULT_OPTION,
+                                servlet: ServletImpl.DEFAULT_OPTION,
+                                javaVersion: JdkVersion.DEFAULT_OPTION)).features
 
         then:
         features.any { it.name == 'geb-with-testcontainers' }
@@ -104,25 +116,25 @@ class FeatureControllerSpec extends Specification {
 
     void 'test list features for application type'() {
         when:
-        def features = client
+        def features = applicationTypeClient
                 .features(ApplicationType.PLUGIN,
                         RequestInfo.LOCAL,
-                        TestFramework.DEFAULT_OPTION,
-                        GormImpl.DEFAULT_OPTION,
-                        ServletImpl.DEFAULT_OPTION,
-                        JdkVersion.DEFAULT_OPTION).features
+                        new FeatureFilter(test: TestFramework.DEFAULT_OPTION,
+                                gorm: GormImpl.DEFAULT_OPTION,
+                                servlet: ServletImpl.DEFAULT_OPTION,
+                                javaVersion: JdkVersion.DEFAULT_OPTION)).features
 
         then:
         !features.any { it.name == 'geb-with-testcontainers' }
 
         when:
-        features = client
+        features = applicationTypeClient
                 .features(ApplicationType.DEFAULT_OPTION,
                         RequestInfo.LOCAL,
-                        TestFramework.DEFAULT_OPTION,
-                        GormImpl.DEFAULT_OPTION,
-                        ServletImpl.DEFAULT_OPTION,
-                        JdkVersion.DEFAULT_OPTION).features
+                        new FeatureFilter(test: TestFramework.DEFAULT_OPTION,
+                                gorm: GormImpl.DEFAULT_OPTION,
+                                servlet: ServletImpl.DEFAULT_OPTION,
+                                javaVersion: JdkVersion.DEFAULT_OPTION)).features
 
         then:
         features.any { it.name == 'gorm-mongodb' }
@@ -130,15 +142,31 @@ class FeatureControllerSpec extends Specification {
 
     void 'test list features for application type should NOT return default included features'() {
         when:
-        def features = client
+        def features = applicationTypeClient
                 .features(ApplicationType.WEB,
                         RequestInfo.LOCAL,
-                        TestFramework.DEFAULT_OPTION,
-                        GormImpl.DEFAULT_OPTION,
-                        ServletImpl.DEFAULT_OPTION,
-                        JdkVersion.DEFAULT_OPTION).features
+                        new FeatureFilter(test: TestFramework.DEFAULT_OPTION,
+                                gorm: GormImpl.DEFAULT_OPTION,
+                                servlet: ServletImpl.DEFAULT_OPTION,
+                                javaVersion: JdkVersion.DEFAULT_OPTION)).features
 
         then:
         !features.any { it.name == 'asset-pipeline-grails' }
+    }
+
+    void "test feature filter - invalid option as query parameter"() {
+        when:
+        String response = httpClient.toBlocking().withCloseable { client ->
+            client.exchange(HttpRequest.GET('/application-types/' + ApplicationType.WEB.name + '/features?javaVersion=invalid'), String.class).body()
+        }
+
+        then:
+        response
+
+        and:
+        ObjectMapper mapper = new ObjectMapper()
+        def map = mapper.readValue(response, Map)
+
+        map.features.collect { it -> it.name }.find { it == 'gorm-mongodb'}
     }
 }

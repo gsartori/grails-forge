@@ -104,4 +104,11 @@ public enum TestFramework {
                 throw new RuntimeException("No default language have been defined for " + this.getName());
         }
     }
+
+    public org.grails.forge.options.TestFramework toTestFramework() {
+        return switch (this) {
+            case SPOCK -> TestFramework.SPOCK;
+            default -> TestFramework.JUNIT;
+        };
+    }
 }

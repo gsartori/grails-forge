@@ -161,24 +161,16 @@ public class ApplicationController implements ApplicationTypeOperations {
      * List the type features.
      * @param type The features
      * @param requestInfo The request info
+     * @param filter features to filter by
      * @return The features
      */
     @Override
-    @Get("/application-types/{type}/features{?gorm,servlet,test,javaVersion}")
+    @Get("/application-types/{type}/features{?filter*}")
     public FeatureList features(ApplicationType type,
                                 RequestInfo requestInfo,
-                                @Nullable TestFramework test,
-                                @Nullable GormImpl gorm,
-                                @Nullable ServletImpl servlet,
-                                @Nullable JdkVersion javaVersion) {
+                                @Nullable FeatureFilter filter) {
         List<FeatureDTO> featureDTOList = featureOperations
-                .getFeatures(requestInfo.getLocale(),
-                        type,
-                        new Options(test != null ? test.toTestFramework() : null,
-                                gorm == null ? GormImpl.DEFAULT_OPTION : gorm,
-                                servlet == null ? ServletImpl.DEFAULT_OPTION : servlet,
-                                javaVersion == null ? JdkVersion.DEFAULT_OPTION : javaVersion,
-                        getOperatingSystem(requestInfo.getUserAgent())));
+                .getFeatures(requestInfo.getLocale(), type, getOptions(filter, requestInfo));
 
         final FeatureList featureList = new FeatureList(featureDTOList);
         featureList.addLink(
@@ -189,21 +181,11 @@ public class ApplicationController implements ApplicationTypeOperations {
     }
 
     @Override
-    @Get("/application-types/{type}/features/default{?gorm,servlet,test,javaVersion}")
+    @Get("/application-types/{type}/features/default{?filter*}")
     public FeatureList defaultFeatures(ApplicationType type,
                                        RequestInfo requestInfo,
-                                       @Nullable TestFramework test,
-                                       @Nullable GormImpl gorm,
-                                       @Nullable ServletImpl servlet,
-                                       @Nullable JdkVersion javaVersion) {
-        List<FeatureDTO> featureDTOList = featureOperations
-                .getDefaultFeatures(requestInfo.getLocale(),
-                        type,
-                        new Options(test != null ? test.toTestFramework() : null,
-                                gorm == null ? GormImpl.DEFAULT_OPTION : gorm,
-                                servlet == null ? ServletImpl.DEFAULT_OPTION : servlet,
-                                javaVersion == null ? JdkVersion.DEFAULT_OPTION : javaVersion,
-                                getOperatingSystem(requestInfo.getUserAgent())));
+                                       @Nullable FeatureFilter filter) {
+        List<FeatureDTO> featureDTOList = featureOperations.getDefaultFeatures(requestInfo.getLocale(), type, getOptions(filter, requestInfo));
 
         final FeatureList featureList = new FeatureList(featureDTOList);
         featureList.addLink(
@@ -239,5 +221,17 @@ public class ApplicationController implements ApplicationTypeOperations {
 
     protected OperatingSystem getOperatingSystem(String userAgent) {
         return UserAgentParser.getOperatingSystem(userAgent);
+    }
+
+    protected Options getOptions(@Nullable FeatureFilter filter, RequestInfo requestInfo) {
+        if (filter == null) {
+            return new Options(null, GormImpl.DEFAULT_OPTION, ServletImpl.DEFAULT_OPTION, JdkVersion.DEFAULT_OPTION, getOperatingSystem(requestInfo.getUserAgent()));
+        }
+
+        return new Options(filter.getTest() != null ? filter.getTest().toTestFramework() : null,
+                filter.getGorm() == null ? GormImpl.DEFAULT_OPTION : filter.getGorm(),
+                filter.getServlet() == null ? ServletImpl.DEFAULT_OPTION : filter.getServlet(),
+                filter.getJavaVersion() == null ? JdkVersion.DEFAULT_OPTION : filter.getJavaVersion(),
+                getOperatingSystem(requestInfo.getUserAgent()));
     }
 }

@@ -19,9 +19,7 @@ import io.micronaut.core.annotation.Nullable;
 import io.micronaut.http.annotation.Get;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.grails.forge.application.ApplicationType;
-import org.grails.forge.options.GormImpl;
-import org.grails.forge.options.JdkVersion;
-import org.grails.forge.options.ServletImpl;
+import org.grails.forge.options.FeatureFilter;
 
 /**
  * Operations on application types.
@@ -52,35 +50,23 @@ public interface ApplicationTypeOperations {
      * List the type features.
      * @param type The features
      * @param serverURL The server URL
-     * @param test The test framework
-     * @param gorm The GORM
-     * @param servlet The Servlet
-     * @param javaVersion The java version
+     * @param filter features to filter by
      * @return The features
      */
-    @Get("/application-types/{type}/features{?gorm,servlet,test,javaVersion}")
+    @Get("/application-types/{type}/features{?filter*}")
     FeatureList features(ApplicationType type,
                          @Parameter(hidden = true) RequestInfo serverURL,
-                         @Nullable TestFramework test,
-                         @Nullable GormImpl gorm,
-                         @Nullable ServletImpl servlet,
-                         @Nullable JdkVersion javaVersion);
+                         @Nullable FeatureFilter filter);
 
     /**
      * List the default features.
      * @param type The features
      * @param serverURL The server URL
-     * @param test The test framework
-     * @param gorm The GORM
-     * @param servlet The Servlet
-     * @param javaVersion The java version
+     * @param filter features to filter by
      * @return The features
      */
-    @Get("/application-types/{type}/features/default{?gorm,servlet,test,javaVersion}")
+    @Get("/application-types/{type}/features/default{?filter*}")
     FeatureList defaultFeatures(ApplicationType type,
                                 @Parameter(hidden = true) RequestInfo serverURL,
-                                @Nullable TestFramework test,
-                                @Nullable GormImpl gorm,
-                                @Nullable ServletImpl servlet,
-                                @Nullable JdkVersion javaVersion);
+                                @Nullable FeatureFilter filter);
 }
