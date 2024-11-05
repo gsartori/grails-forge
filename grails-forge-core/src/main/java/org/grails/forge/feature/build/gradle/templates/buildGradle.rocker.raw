@@ -49,13 +49,6 @@ repositories {
 
 @dependencies.template(applicationType, project, features, gradleBuild)
 
-@if (features.mainClass().isPresent()) {
-application {
-    mainClass.set("@features.mainClass().get()")
-}
-
-}
-
 @if(features.contains("geb-with-webdriver-binaries")) {
 // geb-with-webdriver-binaries is limited to Gradle 8.6 with max JDK 21
 compileJava.options.release = @JdkVersion.valueOf(Math.min(features.javaVersion().majorVersion(), JdkVersion.JDK_21.majorVersion())).majorVersion()
