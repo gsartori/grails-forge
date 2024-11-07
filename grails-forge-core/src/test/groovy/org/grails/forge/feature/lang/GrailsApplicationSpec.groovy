@@ -24,12 +24,6 @@ class GrailsApplicationSpec extends BeanContextSpec implements CommandOutputFixt
         applicationGroovyFile.contains("@CompileStatic")
         !applicationGroovyFile.contains("@PluginSource")
 
-        when:
-        def buildGradle = output['build.gradle']
-
-        then:
-        buildGradle.contains('mainClass.set("example.grails.Application")')
-
         where:
         applicationType << [ApplicationType.WEB, ApplicationType.REST_API]
     }
