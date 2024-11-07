@@ -19,10 +19,21 @@ import jakarta.inject.Singleton;
 import org.grails.forge.application.ApplicationType;
 import org.grails.forge.application.OperatingSystem;
 import org.grails.forge.application.generator.GeneratorContext;
+import org.grails.forge.feature.Category;
+import org.grails.forge.feature.DefaultFeature;
+import org.grails.forge.feature.Feature;
+import org.grails.forge.options.Options;
 import org.grails.forge.template.BinaryTemplate;
 
+import java.util.Set;
+
 @Singleton
-public class GrailsWrapper implements GrailsWrapperFeature {
+public class GrailsWrapper implements DefaultFeature {
+
+    @Override
+    public boolean shouldApply(ApplicationType applicationType, Options options, Set<Feature> selectedFeatures) {
+        return true;
+    }
 
     @Override
     public String getName() {
@@ -41,7 +52,7 @@ public class GrailsWrapper implements GrailsWrapperFeature {
 
     @Override
     public boolean isVisible() {
-        return true;
+        return false;
     }
 
     @Override
@@ -58,5 +69,10 @@ public class GrailsWrapper implements GrailsWrapperFeature {
     @Override
     public boolean supports(ApplicationType applicationType) {
         return true;
+    }
+
+    @Override
+    public String getCategory() {
+        return Category.DEV_TOOLS;
     }
 }
