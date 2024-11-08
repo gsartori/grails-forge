@@ -12,7 +12,7 @@ import spock.lang.Unroll
 class GrailsApplicationSpec extends BeanContextSpec implements CommandOutputFixture {
 
     @Unroll
-    void 'Application file is generated for a #applicationType application type with gradle and referenced in build.gradle mainClassName for language: groovy'() {
+    void 'Application file is generated for a #applicationType application for language: groovy'() {
         when:
         def output = generate(applicationType,
                 new Options(TestFramework.SPOCK),
