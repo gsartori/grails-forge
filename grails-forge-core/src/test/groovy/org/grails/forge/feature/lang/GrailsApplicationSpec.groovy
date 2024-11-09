@@ -12,7 +12,7 @@ import spock.lang.Unroll
 class GrailsApplicationSpec extends BeanContextSpec implements CommandOutputFixture {
 
     @Unroll
-    void 'Application file is generated for a #applicationType application type with gradle and referenced in build.gradle mainClassName for language: groovy'() {
+    void 'Application file is generated for a #applicationType application for language: groovy'() {
         when:
         def output = generate(applicationType,
                 new Options(TestFramework.SPOCK),
@@ -23,12 +23,6 @@ class GrailsApplicationSpec extends BeanContextSpec implements CommandOutputFixt
         def applicationGroovyFile = output.get("grails-app/init/example/grails/Application.${Language.GROOVY.extension}".toString())
         applicationGroovyFile.contains("@CompileStatic")
         !applicationGroovyFile.contains("@PluginSource")
-
-        when:
-        def buildGradle = output['build.gradle']
-
-        then:
-        buildGradle.contains('mainClass.set("example.grails.Application")')
 
         where:
         applicationType << [ApplicationType.WEB, ApplicationType.REST_API]
