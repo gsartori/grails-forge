@@ -70,12 +70,7 @@ public class GebWithWebDriverBinaries implements Feature {
 
     @Override
     public String getDocumentation() {
-        return "https://github.com/grails3-plugins/geb#readme";
-    }
-
-    @Override
-    public String getThirdPartyDocumentation() {
-        return "https://www.gebish.org/manual/current/";
+        return "https://github.com/apache/groovy-geb";
     }
 
     @Override
