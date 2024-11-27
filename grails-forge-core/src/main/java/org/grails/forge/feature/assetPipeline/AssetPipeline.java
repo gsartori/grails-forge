@@ -135,7 +135,12 @@ public class AssetPipeline implements DefaultFeature {
 
     @Override
     public String getDocumentation() {
-        return "https://github.com/bertramdev/grails-asset-pipeline";
+        return "https://github.com/bertramdev/asset-pipeline#readme";
+    }
+
+    @Override
+    public String getThirdPartyDocumentation() {
+        return "https://www.asset-pipeline.com/manual/";
     }
 
     @Override

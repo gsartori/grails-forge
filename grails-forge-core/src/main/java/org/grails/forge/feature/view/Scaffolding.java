@@ -23,6 +23,7 @@ import org.grails.forge.feature.DefaultFeature;
 import org.grails.forge.feature.Feature;
 import org.grails.forge.feature.FeatureContext;
 import org.grails.forge.options.Options;
+import org.grails.forge.util.VersionInfo;
 
 import java.util.Set;
 
@@ -57,12 +58,12 @@ public class Scaffolding implements DefaultFeature {
 
     @Override
     public String getDocumentation() {
-        return "https://github.com/grails/scaffolding";
+        return "https://docs.grails.org/" + VersionInfo.getGrailsVersion() + "/guide/scaffolding.html";
     }
 
     @Override
     public String getThirdPartyDocumentation() {
-        return "https://github.com/gpc/fields";
+        return "https://github.com/gpc/fields#readme";
     }
 
     @Override
