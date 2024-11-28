@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 original authors
+ * Copyright 2017-2024 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import org.grails.forge.feature.DefaultFeature;
 import org.grails.forge.feature.Feature;
 import org.grails.forge.feature.FeatureContext;
 import org.grails.forge.options.Options;
+import org.grails.forge.util.VersionInfo;
 
 import java.util.Set;
 
@@ -57,12 +58,12 @@ public class Scaffolding implements DefaultFeature {
 
     @Override
     public String getDocumentation() {
-        return "https://grails.github.io/scaffolding/latest/groovydoc/";
+        return "https://docs.grails.org/" + VersionInfo.getGrailsVersion() + "/guide/scaffolding.html";
     }
 
     @Override
     public String getThirdPartyDocumentation() {
-        return "https://grails-fields-plugin.github.io/grails-fields/latest/guide/index.html";
+        return "https://github.com/gpc/fields#readme";
     }
 
     @Override
