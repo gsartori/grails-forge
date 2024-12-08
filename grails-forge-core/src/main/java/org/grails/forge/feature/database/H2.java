@@ -84,6 +84,6 @@ public class H2 extends DatabaseDriverFeature {
         generatorContext.addDependency(Dependency.builder()
                 .groupId("com.h2database")
                 .artifactId("h2")
-                .runtime());
+                .runtimeOnly());
     }
 }

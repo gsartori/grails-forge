@@ -50,7 +50,7 @@ public class SpringBootUndertowFeature extends SpringBootEmbeddedServlet {
         generatorContext.addDependency(Dependency.builder()
                 .groupId("org.springframework.boot")
                 .artifactId("spring-boot-starter-undertow")
-                .compile());
+                .implementation());
     }
 
     @Override

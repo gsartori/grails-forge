@@ -52,6 +52,6 @@ public class GrailsWebTestingSupport implements DefaultFeature {
         generatorContext.addDependency(Dependency.builder()
                 .groupId("org.grails")
                 .artifactId("grails-web-testing-support")
-                .test());
+                .testImplementation());
     }
 }

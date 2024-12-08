@@ -34,7 +34,7 @@ abstract class ApplicationContextSpec extends Specification implements ProjectFi
         for (String line : lines) {
             if (line.contains(groupArtifactId)) {
                 String str = line.substring(line.indexOf(groupArtifactId) + groupArtifactId.length() + ":".length())
-                String version = str.substring(0, str.indexOf("\")"))
+                String version = str.substring(0, str.indexOf("\""))
                 return Optional.of(new SemanticVersion(version))
             }
         }

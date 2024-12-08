@@ -89,6 +89,6 @@ public class PostgreSQL extends DatabaseDriverFeature {
         generatorContext.addDependency(Dependency.builder()
                 .groupId("org.postgresql")
                 .artifactId("postgresql")
-                .runtime());
+                .runtimeOnly());
     }
 }

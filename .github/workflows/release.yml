@@ -24,6 +24,8 @@ jobs:
           java-version: '17'
       - name: "🐘 Setup Gradle"
         uses: gradle/actions/setup-gradle@v4
+        with:
+          develocity-access-key: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
       - name: "🔢 Set the current release version"
         id: release_version
         run: |
@@ -45,6 +47,9 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: "🔨 Build All"
+        env:
+          DEVELOCITY_BUILD_CACHE_NODE_USER: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER }}
+          DEVELOCITY_BUILD_CACHE_NODE_KEY: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_KEY }}
         run: ./gradlew grails-cli:assemble
       - name: "🔐 Generate secring file"
         env:
@@ -52,6 +57,8 @@ jobs:
         run: echo $SECRING_FILE | base64 -d > ${{ github.workspace }}/secring.gpg
       - name: "📤 Publish to Sonatype OSSRH"
         env:
+          DEVELOCITY_BUILD_CACHE_NODE_USER: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER }}
+          DEVELOCITY_BUILD_CACHE_NODE_KEY: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_KEY }}
           SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
           SONATYPE_NEXUS_URL: ${{ secrets.SONATYPE_NEXUS_URL }}
@@ -77,7 +84,7 @@ jobs:
       - name: "📤 Publish to Github Pages"
         uses: micronaut-projects/github-pages-deploy-action@master
         env:
-          BETA: ${{ contains(steps.release_version.outputs.value, 'M') }}
+          BETA: ${{ contains(steps.release_version.outputs.value, 'M') || contains(steps.release_version.outputs.release_version, 'RC') }}
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           BASE_BRANCH: 7.0.x
           BRANCH: gh-pages
@@ -108,9 +115,7 @@ jobs:
   deploy:
     name: "Deploy To Google Cloud Run"
     runs-on: ubuntu-latest
-    needs: [build]
-    env:
-      GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
+    needs: build
     steps:
       - name: "📥 Checkout repository"
         uses: actions/checkout@v4
@@ -131,9 +136,12 @@ jobs:
           java-version: '17'
       - name: "🐘 Setup Gradle"
         uses: gradle/actions/setup-gradle@v4
+        with:
+          develocity-access-key: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
       - name: "✅ Run Tests"
         env:
-          GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
+          DEVELOCITY_BUILD_CACHE_NODE_USER: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER }}
+          DEVELOCITY_BUILD_CACHE_NODE_KEY: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_KEY }}
         run: >
           ./gradlew
           grails-forge-api:test
@@ -142,7 +150,8 @@ jobs:
         # To deploy native executables built with GraalVM replace dockerBuild with dockerBuildNative and dockerPush with dockerPushNative. First, try that it works locally.
         env:
           IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_APP_NAME }}:${{ needs.build.outputs.release_version }}
-          GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
+          DEVELOCITY_BUILD_CACHE_NODE_USER: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER }}
+          DEVELOCITY_BUILD_CACHE_NODE_KEY: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_KEY }}
         run: >
           ./gradlew
           grails-forge-web-netty:dockerBuildNative
@@ -150,7 +159,8 @@ jobs:
       - name: "📤 Push image to Google Cloud Container Registry"
         env:
           IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_APP_NAME }}:${{ needs.build.outputs.release_version }}
-          GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
+          DEVELOCITY_BUILD_CACHE_NODE_USER: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER }}
+          DEVELOCITY_BUILD_CACHE_NODE_KEY: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_KEY }}
         run: >
           ./gradlew
           grails-forge-web-netty:dockerPushNative
@@ -166,9 +176,7 @@ jobs:
   deployanalytics:
     name: "Deploy Analytics To Google Cloud Run"
     runs-on: ubuntu-latest
-    needs: [build]
-    env:
-      GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
+    needs: build
     steps:
       - name: "📥 Checkout repository"
         uses: actions/checkout@v4
@@ -189,9 +197,12 @@ jobs:
           java-version: '17'
       - name: "🐘 Setup Gradle"
         uses: gradle/actions/setup-gradle@v4
+        with:
+          develocity-access-key: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
       - name: "✅ Run Tests"
         env:
-          GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
+          DEVELOCITY_BUILD_CACHE_NODE_USER: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER }}
+          DEVELOCITY_BUILD_CACHE_NODE_KEY: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_KEY }}
         run: >
           ./gradlew
           grails-forge-analytics-postgres:test
@@ -199,7 +210,8 @@ jobs:
         # To deploy native executables built with GraalVM replace dockerBuild with dockerBuildNative and dockerPush with dockerPushNative. First, try that it works locally.
         env:
           IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_APP_NAME }}-analytics:${{ needs.build.outputs.release_version }}
-          GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
+          DEVELOCITY_BUILD_CACHE_NODE_USER: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER }}
+          DEVELOCITY_BUILD_CACHE_NODE_KEY: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_KEY }}
         run: >
           ./gradlew
           grails-forge-analytics-postgres:dockerBuildNative
@@ -207,7 +219,8 @@ jobs:
       - name: "📤 Push image to Google Cloud Container Registry"
         env:
           IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_APP_NAME }}-analytics:${{ needs.build.outputs.release_version }}
-          GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
+          DEVELOCITY_BUILD_CACHE_NODE_USER: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER }}
+          DEVELOCITY_BUILD_CACHE_NODE_KEY: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_KEY }}
         run: >
           ./gradlew
           grails-forge-analytics-postgres:dockerPushNative
@@ -224,9 +237,7 @@ jobs:
   linux:
     name: "Release Linux Native CLI"
     runs-on: ubuntu-latest
-    env:
-      GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
-    needs: [build]
+    needs: build
     steps:
       - name: "📥 Checkout repository"
         uses: actions/checkout@v4
@@ -244,6 +255,13 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
       - name: "📸 Build the Native Image (with libc=musl)"
         run: ./gradlew grails-cli:nativeCompile --no-daemon -Pmusl
+        with:
+          develocity-access-key: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
+      - name: "📸 Build the Native Image"
+        env:
+          DEVELOCITY_BUILD_CACHE_NODE_USER: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER }}
+          DEVELOCITY_BUILD_CACHE_NODE_KEY: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_KEY }}
+        run: ./gradlew grails-cli:nativeCompile --no-daemon
       - name: "✅ Verify Build"
         run: ./grails-cli/build/native/nativeCompile/grails --version
       - name: "✅ Verify Create App"
@@ -269,9 +287,7 @@ jobs:
   macos:
     name: "Release OS X Intel Native CLI"
     runs-on: macos-13
-    env:
-      GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
-    needs: [build]
+    needs: build
     steps:
       - name: "📥 Checkout repository"
         uses: actions/checkout@v4
@@ -286,7 +302,12 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: "🐘 Setup Gradle"
         uses: gradle/actions/setup-gradle@v4
+        with:
+          develocity-access-key: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
       - name: "📸 Build the Native Image"
+        env:
+          DEVELOCITY_BUILD_CACHE_NODE_USER: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER }}
+          DEVELOCITY_BUILD_CACHE_NODE_KEY: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_KEY }}
         run: ./gradlew grails-cli:nativeCompile --no-daemon
       - name: "✅ Verify Build"
         run: ./grails-cli/build/native/nativeCompile/grails --version
@@ -313,9 +334,7 @@ jobs:
   macos-arm:
     name: "Release OS X Arm Native CLI"
     runs-on: macos-latest
-    env:
-      GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
-    needs: [build]
+    needs: build
     steps:
       - name: "📥 Checkout repository"
         uses: actions/checkout@v4
@@ -330,7 +349,12 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: "🐘 Setup Gradle"
         uses: gradle/actions/setup-gradle@v4
+        with:
+          develocity-access-key: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
       - name: "📸 Build the Native Image"
+        env:
+          DEVELOCITY_BUILD_CACHE_NODE_USER: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER }}
+          DEVELOCITY_BUILD_CACHE_NODE_KEY: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_KEY }}
         run: ./gradlew grails-cli:nativeCompile --no-daemon
       - name: "✅ Verify Build"
         run: ./grails-cli/build/native/nativeCompile/grails --version
@@ -357,9 +381,7 @@ jobs:
   windows:
     name: "Release Windows Native CLI"
     runs-on: windows-latest
-    env:
-      GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
-    needs: [build]
+    needs: build
     steps:
       - name: "📥 Checkout repository"
         uses: actions/checkout@v4
@@ -374,7 +396,12 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: "🐘 Setup Gradle"
         uses: gradle/actions/setup-gradle@v4
+        with:
+          develocity-access-key: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
       - name: "📸 Build the Native Image"
+        env:
+          DEVELOCITY_BUILD_CACHE_NODE_USER: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER }}
+          DEVELOCITY_BUILD_CACHE_NODE_KEY: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_KEY }}
         run: ./gradlew grails-cli:nativeCompile --no-daemon
       - name: "✅ Verify Build (Powershell)"
         shell: powershell
@@ -407,8 +434,6 @@ jobs:
   sdkman:
     name: "Release to SDKMAN!"
     runs-on: ubuntu-latest
-    env:
-      GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
     needs: [build, linux, macos, macos-arm, windows]
     steps:
       - name: "📥 Checkout repository"
@@ -422,15 +447,21 @@ jobs:
           java-version: '17'
       - name: "🐘 Setup Gradle"
         uses: gradle/actions/setup-gradle@v4
+        with:
+          develocity-access-key: ${{ secrets.GRADLE_ENTERPRISE_ACCESS_KEY }}
       - name: "🚀 Grails SDK Minor Release"
         if: contains(needs.build.outputs.release_version, 'M')
         run: ./gradlew sdkMinorRelease
         env:
+          DEVELOCITY_BUILD_CACHE_NODE_USER: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER }}
+          DEVELOCITY_BUILD_CACHE_NODE_KEY: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_KEY }}
           GVM_SDKVENDOR_KEY: ${{ secrets.GVM_SDKVENDOR_KEY }}
           GVM_SDKVENDOR_TOKEN: ${{ secrets.GVM_SDKVENDOR_TOKEN }}
       - name: "🚀 Grails SDK Major Release"
         if: startsWith(needs.build.outputs.release_version, '6.') && !contains(needs.build.outputs.release_version, 'M')
         run: ./gradlew sdkMajorRelease
         env:
+          DEVELOCITY_BUILD_CACHE_NODE_USER: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER }}
+          DEVELOCITY_BUILD_CACHE_NODE_KEY: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_KEY }}
           GVM_SDKVENDOR_KEY: ${{ secrets.GVM_SDKVENDOR_KEY }}
           GVM_SDKVENDOR_TOKEN: ${{ secrets.GVM_SDKVENDOR_TOKEN }}

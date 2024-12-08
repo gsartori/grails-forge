@@ -50,7 +50,7 @@ public class AssertJ implements Feature {
         generatorContext.addDependency(Dependency.builder()
                 .groupId("org.assertj")
                 .artifactId("assertj-core")
-                .test());
+                .testImplementation());
     }
 
     @Override

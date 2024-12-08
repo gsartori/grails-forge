@@ -51,7 +51,7 @@ public class GrailsCache implements Feature {
         generatorContext.addDependency(Dependency.builder()
                 .groupId("org.grails.plugins")
                 .lookupArtifactId("cache")
-                .compile());
+                .implementation());
     }
 
     @Override

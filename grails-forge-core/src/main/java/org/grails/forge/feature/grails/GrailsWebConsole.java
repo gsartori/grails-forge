@@ -52,7 +52,7 @@ public class GrailsWebConsole implements Feature {
         generatorContext.addDependency(Dependency.builder()
                 .groupId("org.grails.plugins")
                 .lookupArtifactId("grails-console")
-                .runtime());
+                .runtimeOnly());
 
         final Map<String, Object> config = generatorContext.getConfiguration();
         config.put("environments.production.grails.plugin.console.enabled", false);

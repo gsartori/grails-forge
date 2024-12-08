@@ -12,17 +12,14 @@ Features features,
 GradleBuild gradleBuild
 )
 
-@grailsVersion => { @VersionInfo.getGrailsVersion() }
-
-@if(!gradleBuild.getBuildscriptDependencies().isEmpty()) {
+@if(!gradleBuild.getBuildSrcDependencies().isEmpty()) {
 repositories {
-    mavenCentral()
     maven { url "https://repo.grails.org/grails/core/" }
-    maven { url "https://repository.apache.org/content/repositories/snapshots"}
+    mavenCentral()
 }
 dependencies {
-    implementation platform("org.grails:grails-bom:@grailsVersion")
-@for (GradleDependency dependency : gradleBuild.getBuildscriptDependencies()) {
+    implementation platform("org.grails:grails-bom:@VersionInfo.getGrailsVersion()")
+@for (GradleDependency dependency : gradleBuild.getBuildSrcDependencies()) {
     @dependency.toSnippet()
 }
 }

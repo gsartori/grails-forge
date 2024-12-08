@@ -28,3 +28,8 @@ if (!ossUser.isEmpty() && !ossPass.isEmpty()) {
         }
     }
 }
+
+// buildSrc tests fail occasionally without running clean first
+build {
+    dependsOn clean
+}

@@ -29,9 +29,9 @@ class HibernateGormSpec extends ApplicationContextSpec implements CommandOutputF
                 .render()
 
         then:
-        template.contains('implementation("org.grails.plugins:hibernate5")')
-        template.contains("runtimeOnly(\"org.apache.tomcat:tomcat-jdbc\")")
-        template.contains("runtimeOnly(\"com.h2database:h2\")")
+        template.contains('implementation "org.grails.plugins:hibernate5"')
+        template.contains("runtimeOnly \"org.apache.tomcat:tomcat-jdbc\"")
+        template.contains("runtimeOnly \"com.h2database:h2\"")
     }
 
     void "test dependencies are present for buildSrc"() {
@@ -41,17 +41,17 @@ class HibernateGormSpec extends ApplicationContextSpec implements CommandOutputF
                 .renderBuildSrc()
 
         then:
-        template.contains('implementation("org.grails.plugins:hibernate5:9.0.0-SNAPSHOT")')
+        template.contains('implementation "org.grails.plugins:hibernate5:9.0.0-SNAPSHOT"')
     }
 
     void "test buildSrc is present for buildscript dependencies"() {
         given:
         final def output = generate(ApplicationType.WEB, new Options(TestFramework.SPOCK))
-        final def buildSrcBuildGradle = output["buildSrc/build.gradle"]
+        final def buildGradle = output["build.gradle"]
 
         expect:
-        buildSrcBuildGradle != null
-        buildSrcBuildGradle.contains("implementation(\"org.grails.plugins:hibernate5:9.0.0-SNAPSHOT\")")
+        buildGradle != null
+        buildGradle.contains("classpath \"org.grails.plugins:hibernate5:9.0.0-SNAPSHOT\"")
 
     }
 

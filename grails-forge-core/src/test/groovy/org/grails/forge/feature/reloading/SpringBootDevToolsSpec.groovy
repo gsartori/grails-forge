@@ -24,7 +24,7 @@ class SpringBootDevToolsSpec extends ApplicationContextSpec implements CommandOu
         def build = output["build.gradle"]
 
         then:
-        build.contains("developmentOnly(\"org.springframework.boot:spring-boot-devtools\"")
+        build.contains("developmentOnly \"org.springframework.boot:spring-boot-devtools\"")
 
         where:
         applicationType << [ApplicationType.WEB, ApplicationType.REST_API]

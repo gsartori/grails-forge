@@ -57,7 +57,7 @@ public class GrailsDefaultPlugins implements DefaultFeature {
                     generatorContext.addDependency(Dependency.builder()
                             .groupId("org.grails")
                             .artifactId("grails-plugin-" + artifact)
-                            .compile());
+                            .implementation());
                 });
         final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         generatorContext.addTemplate("messages_properties", new URLTemplate("grails-app/i18n/messages.properties", classLoader.getResource("i18n/messages.properties"), false));

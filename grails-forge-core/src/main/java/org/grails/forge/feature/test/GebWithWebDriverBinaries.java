@@ -106,20 +106,20 @@ public class GebWithWebDriverBinaries implements Feature {
                 .forEach(name -> generatorContext.addDependency(Dependency.builder()
                         .groupId("org.seleniumhq.selenium")
                         .artifactId(name)
-                        .test()
+                        .testImplementation()
                 ));
 
         generatorContext.addDependency(
                 Dependency.builder()
                         .groupId("org.seleniumhq.selenium")
                         .artifactId("selenium-firefox-driver")
-                        .testRuntime()
+                        .testRuntimeOnly()
         );
         generatorContext.addDependency(
                 Dependency.builder()
                         .groupId("org.seleniumhq.selenium")
                         .artifactId("selenium-safari-driver")
-                        .testRuntime()
+                        .testRuntimeOnly()
         );
 
         Project project = generatorContext.getProject();

@@ -119,6 +119,19 @@ public final class Dependency {
                 coordinate.isPom());
     }
 
+    public Dependency scope(Scope newScope) {
+        return new Dependency(
+                newScope,
+                groupId,
+                artifactId,
+                version,
+                versionProperty,
+                requiresLookup,
+                annotationProcessorPriority,
+                order,
+                pom);
+    }
+
     public boolean isAnnotationProcessorPriority() {
         return annotationProcessorPriority;
     }
@@ -166,12 +179,12 @@ public final class Dependency {
             }
         }
 
-        public Builder buildscript() {
+        public Builder buildSrc() {
             return scope(Scope.BUILD);
         }
 
-        public Builder compile() {
-            return scope(Scope.COMPILE);
+        public Builder implementation() {
+            return scope(Scope.IMPLEMENTATION);
         }
 
         public Builder console() {
@@ -182,12 +195,12 @@ public final class Dependency {
             return scope(Scope.COMPILE_ONLY);
         }
 
-        public Builder runtime() {
-            return scope(Scope.RUNTIME);
+        public Builder runtimeOnly() {
+            return scope(Scope.RUNTIME_ONLY);
         }
 
-        public Builder test() {
-            return scope(Scope.TEST);
+        public Builder testImplementation() {
+            return scope(Scope.TEST_IMPLEMENTATION);
         }
 
         @SuppressWarnings("unused")
@@ -195,8 +208,8 @@ public final class Dependency {
             return scope(Scope.TEST_COMPILE_ONLY);
         }
 
-        public Builder testRuntime() {
-            return scope(Scope.TEST_RUNTIME);
+        public Builder testRuntimeOnly() {
+            return scope(Scope.TEST_RUNTIME_ONLY);
         }
 
         public Builder annotationProcessor() {
@@ -210,6 +223,10 @@ public final class Dependency {
         public Builder integrationTestImplementationTestFixtures() {
             return scope(Scope.INTEGRATION_TEST_IMPLEMENTATION_TEST_FIXTURES);
         }
+        
+       public Builder classpath() {
+            return scope(Scope.CLASSPATH);
+       }
 
         public Builder annotationProcessor(boolean requiresPriority) {
             this.annotationProcessorPriority = requiresPriority;

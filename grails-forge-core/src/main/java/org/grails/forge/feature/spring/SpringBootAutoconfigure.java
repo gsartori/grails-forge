@@ -53,7 +53,7 @@ public class SpringBootAutoconfigure implements DefaultFeature {
         generatorContext.addDependency(Dependency.builder()
                 .groupId("org.springframework.boot")
                 .artifactId("spring-boot-autoconfigure")
-                .compile());
+                .implementation());
     }
 
     @Override

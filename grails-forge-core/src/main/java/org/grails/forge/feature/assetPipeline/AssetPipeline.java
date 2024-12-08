@@ -63,12 +63,13 @@ public class AssetPipeline implements DefaultFeature {
         generatorContext.addBuildPlugin(GradlePlugin.builder()
                 .id("com.bertramlabs.asset-pipeline")
                 .extension(new RockerWritable(assetPipelineExtension.template(generatorContext.getApplicationType())))
+                .lookupArtifactId("asset-pipeline-gradle")
                 .build());
 
         generatorContext.addDependency(Dependency.builder()
                 .groupId("com.bertramlabs.plugins")
                 .artifactId("asset-pipeline-grails")
-                .runtime());
+                .runtimeOnly());
 
         final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         generatorContext.addTemplate("advancedgrails_svg", new URLTemplate("grails-app/assets/images/advancedgrails.svg", classLoader.getResource("assets/images/advancedgrails.svg")));

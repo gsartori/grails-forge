@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 original authors
+ * Copyright 2017-2024 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -75,23 +75,26 @@ public class ViewJson extends GrailsViews implements DefaultFeature {
         generatorContext.addBuildscriptDependency(Dependency.builder()
                 .groupId("org.grails.plugins")
                 .lookupArtifactId("views-gradle")
-                .buildscript());
+                .buildSrc());
 
-        generatorContext.addBuildPlugin(GradlePlugin.builder().id("org.grails.plugins.views-json").build());
+        generatorContext.addBuildPlugin(GradlePlugin.builder()
+                .id("org.grails.plugins.views-json")
+                .useApplyPlugin(true)
+                .build());
 
         generatorContext.addDependency(Dependency.builder()
                 .groupId("org.grails.plugins")
                 .artifactId("views-json")
-                .compile());
+                .implementation());
         generatorContext.addDependency(Dependency.builder()
                 .groupId("org.grails.plugins")
                 .artifactId("views-json-templates")
-                .compile());
+                .implementation());
 
         generatorContext.addDependency(Dependency.builder()
                 .groupId("org.grails")
                 .artifactId("views-json-testing-support")
-                .test());
+                .testImplementation());
 
         generatorContext.addTemplate("application_index_gson", new RockerTemplate(getViewFolderPath() + "application/index.gson", index.template()));
         generatorContext.addTemplate("_errors_gson", new RockerTemplate(getViewFolderPath() + "errors/_errors.gson", _errors.template()));
