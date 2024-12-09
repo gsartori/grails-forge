@@ -13,7 +13,7 @@ class SpockSpec extends ApplicationContextSpec implements CommandOutputFixture {
         final String buildGradle = output["build.gradle"]
 
         then:
-        buildGradle.contains("testImplementation(\"org.spockframework:spock-core\")")
+        buildGradle.contains("testImplementation \"org.spockframework:spock-core\"")
         buildGradle.contains("useJUnitPlatform()")
     }
 }

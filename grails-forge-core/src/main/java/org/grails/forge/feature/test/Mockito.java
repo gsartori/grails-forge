@@ -69,6 +69,6 @@ public class Mockito implements DefaultFeature {
         generatorContext.addDependency(Dependency.builder()
                         .groupId("org.mockito")
                         .artifactId("mockito-core")
-                .test());
+                .testImplementation());
     }
 }

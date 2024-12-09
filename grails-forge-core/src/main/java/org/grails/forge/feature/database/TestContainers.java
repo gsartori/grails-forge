@@ -83,7 +83,7 @@ public class TestContainers implements Feature {
         return Dependency.builder()
                 .groupId(TESTCONTAINERS_GROUP_ID)
                 .artifactId(artifactId)
-                .test();
+                .testImplementation();
     }
 
     @NonNull

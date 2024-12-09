@@ -47,7 +47,7 @@ public class EHCache implements CacheFeature {
         generatorContext.addDependency(Dependency.builder()
                 .groupId("org.grails.plugins")
                 .lookupArtifactId("cache-ehcache")
-                .compile());
+                .implementation());
     }
 
     @Override

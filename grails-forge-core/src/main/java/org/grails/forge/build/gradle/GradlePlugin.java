@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 original authors
+ * Copyright 2017-2024 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,6 +37,7 @@ public class GradlePlugin implements BuildPlugin {
     private final boolean requiresLookup;
     private final Set<String> buildImports;
     private final int order;
+    private final boolean useApplyPlugin;
 
     public GradlePlugin(@NonNull String id,
                         @Nullable String version,
@@ -46,6 +47,26 @@ public class GradlePlugin implements BuildPlugin {
                         boolean requiresLookup,
                         int order,
                         Set<String> buildImports) {
+        this(id,
+            version,
+            artifactId,
+            extension,
+            settingsExtension,
+            requiresLookup,
+            order,
+            buildImports,
+            false);
+    }
+
+    public GradlePlugin(@NonNull String id,
+                        @Nullable String version,
+                        @Nullable String artifactId,
+                        @Nullable Writable extension,
+                        @Nullable Writable settingsExtension,
+                        boolean requiresLookup,
+                        int order,
+                        Set<String> buildImports,
+                        boolean useApplyPlugin) {
         this.id = id;
         this.version = version;
         this.artifactId = artifactId;
@@ -54,6 +75,7 @@ public class GradlePlugin implements BuildPlugin {
         this.requiresLookup = requiresLookup;
         this.order = order;
         this.buildImports = buildImports;
+        this.useApplyPlugin = useApplyPlugin;
     }
 
     @Nullable
@@ -98,6 +120,10 @@ public class GradlePlugin implements BuildPlugin {
         return requiresLookup;
     }
 
+    public boolean useApplyPlugin() {
+        return useApplyPlugin;
+    }
+
     @Override
     public BuildPlugin resolved(CoordinateResolver coordinateResolver) {
         Coordinate coordinate = coordinateResolver.resolve(artifactId)
@@ -137,6 +163,7 @@ public class GradlePlugin implements BuildPlugin {
         private boolean requiresLookup;
         private boolean pom = false;
         private int order = 0;
+        private boolean useApplyPlugin = false;
         private boolean template = false;
         private Set<String> buildImports = new HashSet<>();
 
@@ -199,8 +226,13 @@ public class GradlePlugin implements BuildPlugin {
             return this;
         }
 
+        public GradlePlugin.Builder useApplyPlugin(boolean useApplyPlugin) {
+            this.useApplyPlugin = useApplyPlugin;
+            return this;
+        }
+
         public GradlePlugin build() {
-            return new GradlePlugin(id, version, artifactId, extension, settingsExtension, requiresLookup, order, buildImports);
+            return new GradlePlugin(id, version, artifactId, extension, settingsExtension, requiresLookup, order, buildImports, useApplyPlugin);
         }
 
         private GradlePlugin.Builder copy() {

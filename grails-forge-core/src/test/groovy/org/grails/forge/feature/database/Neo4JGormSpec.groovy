@@ -32,7 +32,7 @@ class Neo4JGormSpec extends ApplicationContextSpec implements CommandOutputFixtu
                 .render()
 
         then:
-        template.contains("implementation(\"org.grails.plugins:neo4j\")")
+        template.contains("implementation \"org.grails.plugins:neo4j\"")
     }
 
     void "test config"() {

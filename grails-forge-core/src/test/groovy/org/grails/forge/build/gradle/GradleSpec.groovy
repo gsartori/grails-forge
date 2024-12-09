@@ -34,49 +34,38 @@ class GradleSpec extends ApplicationContextSpec implements CommandOutputFixture 
 
     void "test settings.gradle"() {
         given:
-        final def output = generate(ApplicationType.WEB, new Options(TestFramework.SPOCK))
+        final def output = generate(ApplicationType.WEB, new Options(TestFramework.SPOCK), ["gradle-settings-file"])
         final String settingsGradle = output["settings.gradle"]
 
         expect:
-        settingsGradle.contains("pluginManagement")
-        settingsGradle.contains("repositories")
-        settingsGradle.contains("mavenLocal()")
-        settingsGradle.contains("maven { url \"https://repo.grails.org/grails/core/\" }")
-        settingsGradle.contains("gradlePluginPortal()")
-        settingsGradle.contains("id \"org.grails.grails-web\" version \"7.0.0-SNAPSHOT\"")
-        settingsGradle.contains("id \"org.grails.grails-gsp\" version \"7.0.0-SNAPSHOT\"")
+        settingsGradle.contains("rootProject.name")
     }
 
-    void "test settings.gradle for REST-API"() {
+    void "test buildSrc/build.gradle"() {
         given:
-        final def output = generate(ApplicationType.REST_API, new Options(TestFramework.SPOCK))
-        final String settingsGradle = output["settings.gradle"]
+        def output = generate(ApplicationType.WEB, new Options(TestFramework.SPOCK), ["gradle-build-src"])
+        String buildSrcGradle = output["buildSrc/build.gradle"]
 
         expect:
-        settingsGradle.contains("pluginManagement")
-        settingsGradle.contains("repositories")
-        settingsGradle.contains("mavenLocal()")
-        settingsGradle.contains("maven { url \"https://repo.grails.org/grails/core/\" }")
-        settingsGradle.contains("gradlePluginPortal()")
-        settingsGradle.contains("id \"org.grails.grails-web\" version \"7.0.0-SNAPSHOT\"")
-        settingsGradle.contains("id \"org.grails.plugins.views-json\" version \"4.0.0-SNAPSHOT\"")
-        !settingsGradle.contains("id \"org.grails.grails-gsp\" version \"7.0.0-SNAPSHOT\"")
+        buildSrcGradle.contains('repositories')
+        buildSrcGradle.contains('dependencies')
     }
 
-    void "test settings.gradle for REST-API for markup-views"() {
+    void "no settings.gradle file is created without the 'gradle-settings-file' feature"() {
         given:
-        final def output = generate(ApplicationType.REST_API, new Options(TestFramework.SPOCK), ["views-markup"])
-        final String settingsGradle = output["settings.gradle"]
+        def output = generate(ApplicationType.WEB, new Options(TestFramework.SPOCK))
+        String settingsGradle = output["settings.gradle"]
 
         expect:
-        settingsGradle.contains("pluginManagement")
-        settingsGradle.contains("repositories")
-        settingsGradle.contains("mavenLocal()")
-        settingsGradle.contains("maven { url \"https://repo.grails.org/grails/core/\" }")
-        settingsGradle.contains("gradlePluginPortal()")
-        settingsGradle.contains("id \"org.grails.grails-web\" version \"7.0.0-SNAPSHOT\"")
-        settingsGradle.contains("id \"org.grails.plugins.views-markup\" version \"4.0.0-SNAPSHOT\"")
-        !settingsGradle.contains("id \"org.grails.plugins.views-json\" version \"4.0.0-SNAPSHOT\"")
-        !settingsGradle.contains("id \"org.grails.grails-gsp\" version \"7.0.0-SNAPSHOT\"")
+        !settingsGradle
+    }
+
+    void "no buildSrc/build.gradle file is created without the 'gradle-build-src' feature"() {
+        given:
+        def output = generate(ApplicationType.WEB, new Options(TestFramework.SPOCK))
+        String buildSrcGradle = output["buildSrc/settings.gradle"]
+
+        expect:
+        !buildSrcGradle
     }
 }

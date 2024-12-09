@@ -25,6 +25,7 @@ import org.grails.forge.options.TestFramework;
 import java.util.Optional;
 
 public enum GradleConfiguration implements Ordered {
+    CLASSPATH("classpath", -2),
     PROFILE("profile", -1),
     BUILD("implementation", 0),
     ANNOTATION_PROCESSOR("annotationProcessor", 1),
@@ -73,6 +74,11 @@ public enum GradleConfiguration implements Ordered {
             case BUILD_SRC:
                 if (scope.getPhases().contains(Phase.BUILD)) {
                     return Optional.of(GradleConfiguration.BUILD);
+                }
+                break;
+            case BUILDSCRIPT:
+                if (scope.getPhases().contains(Phase.BUILD)) {
+                    return Optional.of(GradleConfiguration.CLASSPATH);
                 }
                 break;
             case MAIN:

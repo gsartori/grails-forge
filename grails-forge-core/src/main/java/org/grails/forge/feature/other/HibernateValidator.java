@@ -50,7 +50,7 @@ public class HibernateValidator implements Feature {
         generatorContext.addDependency(Dependency.builder()
                 .groupId("org.hibernate")
                 .lookupArtifactId("hibernate-validator")
-                .compile());
+                .implementation());
     }
 
     @Override

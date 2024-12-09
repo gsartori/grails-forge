@@ -13,7 +13,7 @@ class PostgresSpec extends ApplicationContextSpec {
                 .render()
 
         then:
-        template.contains('runtimeOnly("org.postgresql:postgresql")')
+        template.contains('runtimeOnly "org.postgresql:postgresql"')
     }
 
     void "test there can only be one of DatabaseDriverFeature"() {

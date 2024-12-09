@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 original authors
+ * Copyright 2017-2024 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -68,15 +68,15 @@ class GrailsGradlePlugin implements DefaultFeature {
         generatorContext.addBuildscriptDependency(Dependency.builder()
                 .groupId("org.grails")
                 .lookupArtifactId("grails-gradle-plugin")
-                .buildscript());
+                .buildSrc());
         if (applicationType == ApplicationType.PLUGIN || applicationType == ApplicationType.WEB_PLUGIN) {
-            generatorContext.addBuildPlugin(GradlePlugin.builder().id("org.grails.grails-plugin").build());
+            generatorContext.addBuildPlugin(GradlePlugin.builder().id("org.grails.grails-plugin").version(grailsGradlePluginCoordinate.getVersion()).useApplyPlugin(true).build());
         }
         if (generatorContext.getFeature(GrailsWeb.class).isPresent()) {
-            generatorContext.addBuildPlugin(GradlePlugin.builder().id("org.grails.grails-web").build());
+            generatorContext.addBuildPlugin(GradlePlugin.builder().id("org.grails.grails-web").version(grailsGradlePluginCoordinate.getVersion()).useApplyPlugin(true).build());
         }
         if (generatorContext.getFeature(GrailsGsp.class).isPresent()) {
-            generatorContext.addBuildPlugin(GradlePlugin.builder().id("org.grails.grails-gsp").build());
+            generatorContext.addBuildPlugin(GradlePlugin.builder().id("org.grails.grails-gsp").version(grailsGradlePluginCoordinate.getVersion()).useApplyPlugin(true).build());
         }
         generatorContext.getBuildProperties().put("grailsGradlePluginVersion", grailsGradlePluginCoordinate.getVersion());
     }

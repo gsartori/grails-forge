@@ -20,11 +20,11 @@ class SpringBootSpec extends BeanContextSpec implements CommandOutputFixture {
         final String build = output['build.gradle']
 
         then:
-        build.contains("implementation(\"org.springframework.boot:spring-boot-starter\")")
-        build.contains("implementation(\"org.springframework.boot:spring-boot-starter-actuator\")")
-        build.contains("implementation(\"org.springframework.boot:spring-boot-starter-logging\")")
-        build.contains("implementation(\"org.springframework.boot:spring-boot-starter-validation\")")
-        build.contains("implementation(\"org.springframework.boot:spring-boot-autoconfigure\")")
+        build.contains("implementation \"org.springframework.boot:spring-boot-starter\"")
+        build.contains("implementation \"org.springframework.boot:spring-boot-starter-actuator\"")
+        build.contains("implementation \"org.springframework.boot:spring-boot-starter-logging\"")
+        build.contains("implementation \"org.springframework.boot:spring-boot-starter-validation\"")
+        build.contains("implementation \"org.springframework.boot:spring-boot-autoconfigure\"")
 
         where:
         applicationType << [ApplicationType.WEB, ApplicationType.REST_API, ApplicationType.WEB_PLUGIN]
@@ -39,11 +39,11 @@ class SpringBootSpec extends BeanContextSpec implements CommandOutputFixture {
         final String build = output['build.gradle']
 
         then:
-        !build.contains("implementation(\"org.springframework.boot:spring-boot-starter\")")
-        !build.contains("implementation(\"org.springframework.boot:spring-boot-starter-actuator\")")
-        build.contains("implementation(\"org.springframework.boot:spring-boot-starter-logging\")")
-        build.contains("implementation(\"org.springframework.boot:spring-boot-starter-validation\")")
-        build.contains("implementation(\"org.springframework.boot:spring-boot-autoconfigure\")")
-        !build.contains("implementation(\"org.springframework.boot:spring-boot-starter-tomcat\")")
+        !build.contains("implementation \"org.springframework.boot:spring-boot-starter\"")
+        !build.contains("implementation \"org.springframework.boot:spring-boot-starter-actuator\"")
+        build.contains("implementation \"org.springframework.boot:spring-boot-starter-logging\"")
+        build.contains("implementation \"org.springframework.boot:spring-boot-starter-validation\"")
+        build.contains("implementation \"org.springframework.boot:spring-boot-autoconfigure\"")
+        !build.contains("implementation \"org.springframework.boot:spring-boot-starter-tomcat\"")
     }
 }

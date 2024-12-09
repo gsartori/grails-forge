@@ -13,7 +13,7 @@ class SQLServerSpec extends ApplicationContextSpec {
                 .render()
 
         then:
-        template.contains('runtimeOnly("com.microsoft.sqlserver:mssql-jdbc")')
+        template.contains('runtimeOnly "com.microsoft.sqlserver:mssql-jdbc"')
     }
 
     void "test there can only be one of DatabaseDriverFeature"() {

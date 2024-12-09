@@ -39,7 +39,7 @@ public class Spock implements TestFeature, DefaultFeature {
         generatorContext.addDependency(Dependency.builder()
                         .groupId("org.spockframework")
                         .artifactId("spock-core")
-                        .test()
+                        .testImplementation()
                 .build());
     }
 

@@ -83,6 +83,6 @@ public class EmbeddedMongo implements Feature {
         generatorContext.addDependency(Dependency.builder()
                 .groupId("org.grails.plugins")
                 .lookupArtifactId("embedded-mongodb")
-                .scope(Scope.TEST_RUNTIME));
+                .scope(Scope.TEST_RUNTIME_ONLY));
     }
 }

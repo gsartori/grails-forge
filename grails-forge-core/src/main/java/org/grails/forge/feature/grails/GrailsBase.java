@@ -54,15 +54,15 @@ public class GrailsBase implements DefaultFeature {
         generatorContext.addDependency(Dependency.builder()
                 .groupId("org.grails")
                 .artifactId("grails-core")
-                .compile());
+                .implementation());
         generatorContext.addDependency(Dependency.builder()
                 .groupId("org.grails")
                 .artifactId("grails-web-boot")
-                .compile());
+                .implementation());
         generatorContext.addDependency(Dependency.builder()
                 .groupId("org.grails")
                 .artifactId("grails-logging")
-                .compile());
+                .implementation());
 
         final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         generatorContext.addTemplate("src/main/groovy", new URLTemplate("src/main/groovy/.gitkeep", classLoader.getResource(".gitkeep")));

@@ -52,7 +52,7 @@ public class MongoSync extends MongoFeature {
         generatorContext.addDependency(Dependency.builder()
                 .groupId("org.mongodb")
                 .lookupArtifactId("mongodb-driver-sync")
-                .compile()
+                .implementation()
         );
     }
 

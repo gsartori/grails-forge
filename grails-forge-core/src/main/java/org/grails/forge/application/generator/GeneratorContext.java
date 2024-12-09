@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 original authors
+ * Copyright 2017-2024 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ import org.grails.forge.build.BuildProperties;
 import org.grails.forge.build.dependencies.*;
 import org.grails.forge.feature.Feature;
 import org.grails.forge.feature.Features;
+import org.grails.forge.feature.build.gradle.GradleBuildSrc;
 import org.grails.forge.feature.config.ApplicationConfiguration;
 import org.grails.forge.feature.config.BootstrapConfiguration;
 import org.grails.forge.feature.config.Configuration;
@@ -318,9 +319,19 @@ public class GeneratorContext implements DependencyContext {
         if (dependency.requiresLookup()) {
             Coordinate coordinate = coordinateResolver.resolve(dependency.getArtifactId())
                     .orElseThrow(() -> new LookupFailedException(dependency.getArtifactId()));
-            this.buildscriptDependencies.add(dependency.resolved(coordinate));
+            addBuildscriptDependencyBasedOnFeatures(dependency.resolved(coordinate));
         } else {
+            addBuildscriptDependencyBasedOnFeatures(dependency);
+        }
+    }
+
+    private void addBuildscriptDependencyBasedOnFeatures(@NonNull Dependency dependency) {
+        if (getFeature(GradleBuildSrc.class).isPresent()) {
+            // for buildSrc/build.gradle with initial scope
             this.buildscriptDependencies.add(dependency);
+        } else {
+            // for main build.gradle with classpath scope
+            this.buildscriptDependencies.add(dependency.scope(Scope.CLASSPATH));
         }
     }
 

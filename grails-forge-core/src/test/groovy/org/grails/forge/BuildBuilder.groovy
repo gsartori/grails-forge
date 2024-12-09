@@ -101,6 +101,7 @@ class BuildBuilder implements ProjectFixture, ContextFixture {
 
     String renderBuildSrc() {
         List<String> featureNames = this.features ?: []
+        featureNames.add("gradle-build-src")
         TestFramework testFramework = this.testFramework ?: TestFramework.SPOCK
         ApplicationType type = this.applicationType ?: ApplicationType.WEB
         Project project = this.project ?: buildProject()

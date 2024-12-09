@@ -2,7 +2,6 @@
 @import org.grails.forge.application.Project
 @import org.grails.forge.build.gradle.GradleBuild
 @import org.grails.forge.build.gradle.GradleDependency
-@import org.grails.forge.feature.build.gradle.templates.dependency
 @import org.grails.forge.feature.Features
 
 @args (
@@ -15,13 +14,5 @@ GradleBuild gradleBuild
 dependencies {
 @for (GradleDependency dependency : gradleBuild.getDependencies()) {
     @dependency.toSnippet()
-}
-
-@if (features.contains("hamcrest")) {
-    @dependency.template("org.hamcrest","hamcrest", "testImplementation", null, false)
-}
-
-@if (features.contains("neo4j-bolt")) {
-    @dependency.template("org.neo4j.test", "neo4j-harness", "testRuntimeOnly", null, false)
 }
 }
