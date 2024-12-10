@@ -89,16 +89,6 @@ public class AssetPipeline implements DefaultFeature {
                 .version("3.7.1")
                 .developmentOnly());
 
-        generatorContext.addDependency(Dependency.builder()
-                .groupId("org.webjars.npm")
-                .artifactId("bootstrap")
-                .developmentOnly());
-
-        generatorContext.addDependency(Dependency.builder()
-                .groupId("org.webjars.npm")
-                .artifactId("bootstrap")
-                .developmentOnly());
-
         final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         generatorContext.addTemplate("advancedgrails_svg", new URLTemplate("grails-app/assets/images/advancedgrails.svg", classLoader.getResource("assets/images/advancedgrails.svg")));
         generatorContext.addTemplate("apple-touch-icon_png", new URLTemplate("grails-app/assets/images/apple-touch-icon.png", classLoader.getResource("assets/images/apple-touch-icon.png")));
