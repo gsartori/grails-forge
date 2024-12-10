@@ -37,31 +37,31 @@
         <div class="row">
             <div class="card border-0 col">
                 <div class="card-body">
-                    <h3 class="card-title">
+                    <h4 class="card-title">
                         <a class="link-underline link-underline-opacity-0" href="https://guides.grails.org" target="_blank">
                             <asset:image src="advancedgrails.svg" alt="Grails Guides" class="me-2" width="45" /> Grails Guides
                         </a>
-                    </h3>
+                    </h4>
                     <p class="card-text">Building your first Grails app? Looking to add security, or create a Single-Page-App? Check out the <a href="https://guides.grails.org" target="_blank">Grails Guides</a> for step-by-step tutorials.</p>
                 </div>
             </div>
             <div class="card border-0 col">
                 <div class="card-body">
-                    <h3 class="card-title">
+                    <h4 class="card-title">
                         <a class="link-underline link-underline-opacity-0" href="https://docs.grails.org" target="_blank">
                             <asset:image src="documentation.svg" alt="Grails Documentation" class="me-2" width="45" /> Documentation
                         </a>
-                    </h3>
+                    </h4>
                     <p class="card-text">Ready to dig in? You can find in-depth documentation for all the features of Grails in the <a href="https://docs.grails.org" target="_blank">User Guide</a>.</p>
                 </div>
             </div>
             <div class="card border-0 col">
                 <div class="card-body">
-                    <h3 class="card-title">
+                    <h4 class="card-title">
                         <a class="link-underline link-underline-opacity-0" href="https://slack.grails.org" target="_blank">
                             <asset:image src="slack.svg" alt="Grails Slack"  class="me-2" /> Join the Community
                         </a>
-                    </h3>
+                    </h4>
                     <p class="card-text">Get feedback and share your experience with other Grails developers in the community <a href="https://slack.grails.org" target="_blank">Slack channel</a>.</p>
                 </div>
             </div>
