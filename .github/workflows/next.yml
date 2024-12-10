@@ -1,4 +1,4 @@
-name: "next"
+name: "Next"
 on:
   workflow_dispatch:
 jobs:
