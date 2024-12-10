@@ -195,6 +195,10 @@ public final class Dependency {
             return scope(Scope.COMPILE_ONLY);
         }
 
+        public Builder developmentOnly() {
+            return scope(Scope.DEVELOPMENT_ONLY);
+        }
+
         public Builder runtimeOnly() {
             return scope(Scope.RUNTIME_ONLY);
         }
