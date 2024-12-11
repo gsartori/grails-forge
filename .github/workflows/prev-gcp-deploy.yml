@@ -1,10 +1,13 @@
-name: "Next"
+name: "Prev GCP Deploy"
 on:
   workflow_dispatch:
 jobs:
   build:
     name: "Build Project"
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: ['17']
     steps:
       - name: "📥 Checkout repository"
         uses: actions/checkout@v4
@@ -12,7 +15,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'liberica'
-          java-version: '17'
+          java-version: ${{ matrix.java }}
       - name: "🐘 Setup Gradle"
         uses: gradle/actions/setup-gradle@v4
         with:
@@ -29,7 +32,7 @@ jobs:
     if: github.event_name != 'pull_request'
     needs: [build]
     env:
-      IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_APP_NAME }}:next
+      IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_APP_NAME }}:prev
     steps:
       - name: "🔑 Login"
         uses: google-github-actions/setup-gcloud@v0
@@ -77,10 +80,10 @@ jobs:
           -PdockerImageName=${{ env.IMAGE_NAME }}
       - name: "🚀 Deploy Docker image"
         run: >
-          gcloud run deploy ${{ secrets.GCP_PROJECT_ID }}-next
+          gcloud run deploy ${{ secrets.GCP_PROJECT_ID }}-prev
           --image $IMAGE_NAME
           --region us-central1
-          --update-env-vars=HOSTNAME="next.grails.org",CORS_ALLOWED_ORIGIN="https://start.grails.org",GITHUB_OAUTH_APP_CLIENT_ID=${{ secrets.GH_OAUTH_SNAPSHOT_CLIENT_ID }},GITHUB_OAUTH_APP_CLIENT_SECRET=${{ secrets.GH_OAUTH_SNAPSHOT_CLIENT_SECRET }},GITHUB_USER_AGENT=${{ secrets.GH_USER_AGENT }},GITHUB_REDIRECT_URL=${{ secrets.GH_REDIRECT_URL }}
+          --update-env-vars=HOSTNAME="prev.grails.org",CORS_ALLOWED_ORIGIN="https://start.grails.org",GITHUB_OAUTH_APP_CLIENT_ID=${{ secrets.GH_OAUTH_SNAPSHOT_CLIENT_ID }},GITHUB_OAUTH_APP_CLIENT_SECRET=${{ secrets.GH_OAUTH_SNAPSHOT_CLIENT_SECRET }},GITHUB_USER_AGENT=${{ secrets.GH_USER_AGENT }},GITHUB_REDIRECT_URL=${{ secrets.GH_REDIRECT_URL }}
           --platform managed
           --allow-unauthenticated
           --service-account=${{ secrets.GCLOUD_EMAIL }}
@@ -90,7 +93,7 @@ jobs:
     if: github.event_name != 'pull_request'
     needs: [build]
     env:
-      IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_APP_NAME }}-analytics:next
+      IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_APP_NAME }}-analytics:prev
     steps:
       - name: "🔑 Login"
         uses: google-github-actions/setup-gcloud@v0
@@ -136,4 +139,4 @@ jobs:
       - name: "🚀 Deploy Docker image"
         run: |
           gcloud components install beta --quiet
-          gcloud run deploy ${{ secrets.GCP_PROJECT_ID }}-analytics-next --image $IMAGE_NAME --region us-central1 --platform managed --allow-unauthenticated --service-account=${{ secrets.GCLOUD_EMAIL }}
+          gcloud run deploy ${{ secrets.GCP_PROJECT_ID }}-analytics-prev --image $IMAGE_NAME --region us-central1 --platform managed --allow-unauthenticated --service-account=${{ secrets.GCLOUD_EMAIL }}
