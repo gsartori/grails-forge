@@ -52,6 +52,6 @@ public class ViewsJsonTestingSupport implements DefaultFeature {
         generatorContext.addDependency(Dependency.builder()
                 .groupId("org.grails")
                 .artifactId("views-json-testing-support")
-                .test());
+                .testImplementation());
     }
 }

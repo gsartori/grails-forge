@@ -17,10 +17,10 @@ class GebWithWebDriverBinariesSpec extends ApplicationContextSpec implements Com
 
         expect:
         buildGradle.contains('integrationTestImplementation testFixtures("org.grails.plugins:geb")')
-        buildGradle.contains('testImplementation("org.seleniumhq.selenium:selenium-api")')
-        buildGradle.contains('testImplementation("org.seleniumhq.selenium:selenium-support")')
-        buildGradle.contains('testImplementation("org.seleniumhq.selenium:selenium-remote-driver")')
-        buildGradle.contains('testRuntimeOnly("org.seleniumhq.selenium:selenium-firefox-driver")')
+        buildGradle.contains('testImplementation "org.seleniumhq.selenium:selenium-api"')
+        buildGradle.contains('testImplementation "org.seleniumhq.selenium:selenium-support"')
+        buildGradle.contains('testImplementation "org.seleniumhq.selenium:selenium-remote-driver"')
+        buildGradle.contains('testRuntimeOnly "org.seleniumhq.selenium:selenium-firefox-driver"')
     }
 
     void 'test GebConfig.groovy file is present'() {
@@ -48,10 +48,8 @@ class GebWithWebDriverBinariesSpec extends ApplicationContextSpec implements Com
         given:
         def output = generate(ApplicationType.WEB, new Options(TestFramework.SPOCK), ['geb-with-webdriver-binaries'])
         def buildGradle = output['build.gradle']
-        def settingGradle = output['settings.gradle']
 
         expect:
-        settingGradle.contains('id "com.github.erdi.webdriver-binaries" version "3.2"')
         buildGradle.contains('id "com.github.erdi.webdriver-binaries"')
         buildGradle.contains('webdriverBinaries')
         buildGradle.contains("chromedriver '122.0.6260.0'")
@@ -63,10 +61,8 @@ class GebWithWebDriverBinariesSpec extends ApplicationContextSpec implements Com
         given:
         def output = generate(ApplicationType.WEB, new Options(TestFramework.SPOCK, OperatingSystem.WINDOWS), ['geb-with-webdriver-binaries'])
         def buildGradle = output['build.gradle']
-        def settingGradle = output['settings.gradle']
 
         expect:
-        settingGradle.contains('id "com.github.erdi.webdriver-binaries" version "3.2"')
         buildGradle.contains('id "com.github.erdi.webdriver-binaries"')
         buildGradle.contains('webdriverBinaries')
         buildGradle.contains("chromedriver '122.0.6260.0'")

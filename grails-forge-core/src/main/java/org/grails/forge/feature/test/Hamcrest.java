@@ -17,6 +17,8 @@ package org.grails.forge.feature.test;
 
 import jakarta.inject.Singleton;
 import org.grails.forge.application.ApplicationType;
+import org.grails.forge.application.generator.GeneratorContext;
+import org.grails.forge.build.dependencies.Dependency;
 import org.grails.forge.feature.Category;
 import org.grails.forge.feature.Feature;
 
@@ -51,5 +53,13 @@ public class Hamcrest  implements Feature {
     @Override
     public String getThirdPartyDocumentation() {
         return "https://hamcrest.org/JavaHamcrest/";
+    }
+
+    @Override
+    public void apply(GeneratorContext generatorContext) {
+        generatorContext.addDependency(Dependency.builder()
+                .groupId("org.hamcrest")
+                .artifactId("hamcrest")
+                .testImplementation());
     }
 }

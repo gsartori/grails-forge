@@ -22,10 +22,9 @@ class AsciidoctorSpec extends ApplicationContextSpec implements CommandOutputFix
         given:
         final def output = generate(ApplicationType.WEB, new Options(TestFramework.SPOCK), ["asciidoctor"])
         final def buildGradle = output["build.gradle"]
-        final def settingGradle = output["settings.gradle"]
 
         expect:
-        settingGradle.contains("id \"org.asciidoctor.jvm.convert\" version \"4.0.1\"")
+        buildGradle.contains("id \"org.asciidoctor.jvm.convert\" version \"4.0.1\"")
         buildGradle.contains("apply from: \"gradle/asciidoc.gradle\"")
     }
 

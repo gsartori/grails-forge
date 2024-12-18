@@ -88,6 +88,6 @@ public class MySQL extends DatabaseDriverFeature {
         generatorContext.addDependency(Dependency.builder()
                 .groupId("mysql")
                 .artifactId("mysql-connector-java")
-                .runtime());
+                .runtimeOnly());
     }
 }

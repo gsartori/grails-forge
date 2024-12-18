@@ -25,10 +25,10 @@ import org.grails.forge.feature.DefaultFeature;
 import org.grails.forge.feature.Feature;
 import org.grails.forge.io.ConsoleOutput;
 import org.grails.forge.io.FileSystemOutputHandler;
+import org.grails.forge.options.JdkVersion;
 import org.grails.forge.options.Language;
 import org.grails.forge.options.Options;
 import org.grails.forge.options.TestFramework;
-import org.grails.forge.util.VersionInfo;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
@@ -149,7 +149,7 @@ public class CodeGenConfig {
                             .map(DefaultFeature.class::cast)
                             .filter(f -> f.shouldApply(
                                     codeGenConfig.getApplicationType(),
-                                    new Options(codeGenConfig.getTestFramework(), VersionInfo.getJavaVersion()),
+                                    new Options(codeGenConfig.getTestFramework(), JdkVersion.DEFAULT_OPTION),
                                     new HashSet<>()))
                             .map(Feature::getName)
                             .collect(Collectors.toList()));

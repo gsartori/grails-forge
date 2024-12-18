@@ -13,7 +13,7 @@ class MySQLSpec extends ApplicationContextSpec {
                 .render()
 
         then:
-        template.contains('runtimeOnly("mysql:mysql-connector-java")')
+        template.contains('runtimeOnly "mysql:mysql-connector-java"')
     }
 
     void "test there can only be one of DatabaseDriverFeature"() {

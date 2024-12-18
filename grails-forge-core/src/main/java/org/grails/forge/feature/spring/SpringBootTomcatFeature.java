@@ -52,7 +52,7 @@ public class SpringBootTomcatFeature extends SpringBootEmbeddedServlet {
         generatorContext.addDependency(Dependency.builder()
                 .groupId("org.springframework.boot")
                 .artifactId("spring-boot-starter-tomcat")
-                .compile());
+                .implementation());
     }
 
     @Override

@@ -12,36 +12,5 @@ GradleBuild gradleBuild,
 Function<String, Coordinate> coordinateResolver,
 Features features)
 
-@grailsGradlePluginVersion => { @coordinateResolver.apply("grails-gradle-plugin").getVersion() }
-@viewsGradlePluginVersion => { @coordinateResolver.apply("views-gradle").getVersion() }
-@assetPipelineVersion => { @coordinateResolver.apply("asset-pipeline-gradle").getVersion() }
-
 @gradleBuild.renderSettingsExtensions()
-
-pluginManagement {
-    repositories {
-        mavenLocal()
-        maven { url "https://repo.grails.org/grails/core/" }
-        gradlePluginPortal()
-    }
-    plugins {
-        @if(features.contains("grails-web")) {
-        id "org.grails.grails-web" version "@grailsGradlePluginVersion"
-        }
-        @if(features.contains("grails-gsp")) {
-        id "org.grails.grails-gsp" version "@grailsGradlePluginVersion"
-        }
-        @if(features.contains("views-json")) {
-        id "org.grails.plugins.views-json" version "@viewsGradlePluginVersion"
-        }
-        @if(features.contains("views-markup"))  {
-        id "org.grails.plugins.views-markup" version "@viewsGradlePluginVersion"
-        }
-
-    @for (GradlePlugin gradlePlugin : gradleBuild.getPluginsWithVersion()) {
-        id "@gradlePlugin.getId()" version "@gradlePlugin.getVersion()"
-    }
-    }
-}
-
 rootProject.name="@project.getName()"

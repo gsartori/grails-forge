@@ -55,19 +55,19 @@ public class SpringBootStarterFeature implements DefaultFeature {
             generatorContext.addDependency(Dependency.builder()
                     .groupId("org.springframework.boot")
                     .artifactId("spring-boot-starter")
-                    .compile());
+                    .implementation());
             generatorContext.addDependency(Dependency.builder()
                     .groupId("org.springframework.boot")
                     .artifactId("spring-boot-starter-actuator")
-                    .compile());
+                    .implementation());
         }
         generatorContext.addDependency(Dependency.builder()
                 .groupId("org.springframework.boot")
                 .artifactId("spring-boot-starter-validation")
-                .compile());
+                .implementation());
         generatorContext.addDependency(Dependency.builder()
                 .groupId("org.springframework.boot")
                 .artifactId("spring-boot-starter-logging")
-                .compile());
+                .implementation());
     }
 }

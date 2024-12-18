@@ -31,7 +31,7 @@ class ApplicationCommandSpec extends CommandSpec implements CommandFixture {
         then:
         noExceptionThrown()
         out.toString().contains("Grails Version: " + VersionInfo.getGrailsVersion())
-        out.toString().contains("JVM Version: " + System.getProperty("java.version"))
+        out.toString().contains("JVM Version: " + Objects.requireNonNullElse(System.getProperty("java.version"), "<a valid java.home was not found>" ))
 
         where:
         args        | _

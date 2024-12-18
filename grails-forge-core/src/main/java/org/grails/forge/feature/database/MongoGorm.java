@@ -68,7 +68,7 @@ public class MongoGorm extends GormOneOfFeature {
         generatorContext.addDependency(Dependency.builder()
                 .groupId("org.grails.plugins")
                 .artifactId("mongodb")
-                .compile());
+                .implementation());
     }
 
     @Override

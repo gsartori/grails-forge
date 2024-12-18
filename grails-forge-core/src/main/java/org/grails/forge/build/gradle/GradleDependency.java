@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 original authors
+ * Copyright 2017-2024 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,8 @@ import org.grails.forge.template.Writable;
 
 import java.util.Comparator;
 import java.util.Objects;
+
+import static org.grails.forge.build.gradle.GradleConfiguration.INTEGRATION_TEST_IMPLEMENTATION_TEST_FIXTURES;
 
 public class GradleDependency extends DependencyCoordinate {
 
@@ -99,14 +101,16 @@ public class GradleDependency extends DependencyCoordinate {
 
     @NonNull
     public String toSnippet() {
-        String snippet = gradleConfiguration.getConfigurationName();
+        String optionalSpace = gradleConfiguration == INTEGRATION_TEST_IMPLEMENTATION_TEST_FIXTURES ? "" : " ";
+        String snippet = gradleConfiguration.getConfigurationName() + optionalSpace;
         if (isPom()) {
-            String platformPrefix = " ";
-            snippet += platformPrefix + "platform";
+            snippet += "platform(";
+        } else if (gradleConfiguration == INTEGRATION_TEST_IMPLEMENTATION_TEST_FIXTURES) {
+            snippet += "(";
         }
-        snippet += "(\"" + getGroupId() + ':' + getArtifactId() +
-                (getVersion() != null ? (':' + getVersion()) : "") + "\")";
-        if (isPom()) {
+        snippet += "\"" + getGroupId() + ':' + getArtifactId() +
+                (getVersion() != null ? (':' + getVersion()) : "") + "\"";
+        if (isPom() || gradleConfiguration == INTEGRATION_TEST_IMPLEMENTATION_TEST_FIXTURES) {
             snippet += ")";
         }
         return snippet;

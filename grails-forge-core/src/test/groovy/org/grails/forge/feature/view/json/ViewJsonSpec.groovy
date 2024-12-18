@@ -29,11 +29,11 @@ class ViewJsonSpec extends ApplicationContextSpec implements CommandOutputFixtur
                 .render()
 
         then:
-        template.contains("id \"org.grails.grails-web\"")
-        template.contains("id \"org.grails.plugins.views-json\"")
-        template.contains("implementation(\"org.grails.plugins:views-json\"")
-        template.contains("implementation(\"org.grails.plugins:views-json-templates\"")
-        template.contains("testImplementation(\"org.grails:views-json-testing-support\"")
+        template.contains("apply plugin: \"org.grails.grails-web\"")
+        template.contains("apply plugin: \"org.grails.plugins.views-json\"")
+        template.contains("implementation \"org.grails.plugins:views-json\"")
+        template.contains("implementation \"org.grails.plugins:views-json-templates\"")
+        template.contains("testImplementation \"org.grails:views-json-testing-support\"")
     }
 
     void "test default gson views are present"() {
@@ -55,11 +55,11 @@ class ViewJsonSpec extends ApplicationContextSpec implements CommandOutputFixtur
         final String build = output['build.gradle']
 
         then:
-        build.contains("id \"org.grails.grails-web\"")
-        build.contains("id \"org.grails.plugins.views-json\"")
-        build.contains("implementation(\"org.grails.plugins:views-json\"")
-        build.contains("implementation(\"org.grails.plugins:views-json-templates\"")
-        build.contains("testImplementation(\"org.grails:views-json-testing-support\"")
+        build.contains("apply plugin: \"org.grails.grails-web\"")
+        build.contains("apply plugin: \"org.grails.plugins.views-json\"")
+        build.contains("implementation \"org.grails.plugins:views-json\"")
+        build.contains("implementation \"org.grails.plugins:views-json-templates\"")
+        build.contains("testImplementation \"org.grails:views-json-testing-support\"")
 
         where:
         applicationType << [ApplicationType.REST_API]
@@ -72,10 +72,10 @@ class ViewJsonSpec extends ApplicationContextSpec implements CommandOutputFixtur
         final String build = output['build.gradle']
 
         then:
-        !build.contains("id \"org.grails.plugins.views-json\"")
-        !build.contains("implementation(\"org.grails.plugins:views-json\"")
-        !build.contains("implementation(\"org.grails.plugins:views-json-templates\"")
-        !build.contains("testImplementation(\"org.grails:views-json-testing-support\"")
+        !build.contains("apply plugin: \"org.grails.plugins.views-json\"")
+        !build.contains("implementation \"org.grails.plugins:views-json\"")
+        !build.contains("implementation \"org.grails.plugins:views-json-templates\"")
+        !build.contains("testImplementation \"org.grails:views-json-testing-support\"")
 
         where:
         applicationType << [ApplicationType.WEB, ApplicationType.WEB_PLUGIN, ApplicationType.PLUGIN]

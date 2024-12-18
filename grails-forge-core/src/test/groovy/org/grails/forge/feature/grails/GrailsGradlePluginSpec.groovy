@@ -26,17 +26,17 @@ class GrailsGradlePluginSpec extends BeanContextSpec implements CommandOutputFix
                 .renderBuildSrc()
 
         then:
-        template.contains('implementation("org.grails:grails-gradle-plugin:7.0.0-SNAPSHOT")')
+        template.contains('implementation "org.grails:grails-gradle-plugin:7.0.0-SNAPSHOT"')
     }
 
     void "test buildSrc is present for buildscript dependencies"() {
         given:
         final def output = generate(ApplicationType.WEB, new Options(TestFramework.SPOCK))
-        final def buildSrcBuildGradle = output["buildSrc/build.gradle"]
+        final def buildGradle = output["build.gradle"]
 
         expect:
-        buildSrcBuildGradle != null
-        buildSrcBuildGradle.contains("implementation(\"org.grails:grails-gradle-plugin:7.0.0-SNAPSHOT\")")
+        buildGradle != null
+        buildGradle.contains("classpath \"org.grails:grails-gradle-plugin:7.0.0-SNAPSHOT\"")
 
     }
 
@@ -47,7 +47,7 @@ class GrailsGradlePluginSpec extends BeanContextSpec implements CommandOutputFix
                 .render()
 
         then:
-        template.contains("id \"org.grails.grails-plugin\"")
+        template.contains("apply plugin: \"org.grails.grails-plugin\"")
     }
 
 }

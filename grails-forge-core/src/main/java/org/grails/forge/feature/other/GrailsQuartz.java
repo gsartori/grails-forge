@@ -48,7 +48,7 @@ public class GrailsQuartz implements Feature {
         generatorContext.addDependency(Dependency.builder()
                 .groupId("org.grails.plugins")
                 .lookupArtifactId("quartz")
-                .compile());
+                .implementation());
     }
 
     @Override

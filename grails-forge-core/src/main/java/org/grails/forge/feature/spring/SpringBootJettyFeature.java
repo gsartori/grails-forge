@@ -50,7 +50,7 @@ public class SpringBootJettyFeature extends SpringBootEmbeddedServlet {
         generatorContext.addDependency(Dependency.builder()
                 .groupId("org.springframework.boot")
                 .artifactId("spring-boot-starter-jetty")
-                .compile());
+                .implementation());
     }
 
     @Override

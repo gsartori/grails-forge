@@ -64,13 +64,13 @@ public class LogbackGroovy implements LoggingFeature {
         generatorContext.addDependency(Dependency.builder()
                 .groupId("org.grails")
                 .artifactId("grails-logging")
-                .compile());
+                .implementation());
 
         generatorContext.addDependency(Dependency.builder()
                 .groupId("io.github.virtualdogbert")
                 .artifactId("logback-groovy-config")
                 .version("1.12.4")
-                .compile());
+                .implementation());
     }
 
     @Override

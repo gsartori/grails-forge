@@ -16,7 +16,7 @@ class GrailsWebSpec extends ApplicationContextSpec implements CommandOutputFixtu
         final def buildGradle = output["build.gradle"]
 
         expect:
-        buildGradle.contains("id \"org.grails.grails-web\"")
+        buildGradle.contains("apply plugin: \"org.grails.grails-web\"")
     }
 
     void "test grails-web configuration"() {

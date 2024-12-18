@@ -52,6 +52,6 @@ public class GormTestingSupport implements DefaultFeature {
         generatorContext.addDependency(Dependency.builder()
                 .groupId("org.grails")
                 .artifactId("grails-gorm-testing-support")
-                .test());
+                .testImplementation());
     }
 }

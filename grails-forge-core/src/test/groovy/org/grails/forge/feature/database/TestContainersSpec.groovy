@@ -16,8 +16,8 @@ class TestContainersSpec extends ApplicationContextSpec {
                 .render()
 
         then:
-        template.contains('testImplementation("org.testcontainers:mysql")')
-        template.contains('testImplementation("org.testcontainers:testcontainers")')
+        template.contains('testImplementation "org.testcontainers:mysql"')
+        template.contains('testImplementation "org.testcontainers:testcontainers"')
     }
 
     void "test postgres dependency is present for gradle"() {
@@ -27,8 +27,8 @@ class TestContainersSpec extends ApplicationContextSpec {
                 .render()
 
         then:
-        template.contains('testImplementation("org.testcontainers:postgresql")')
-        template.contains('testImplementation("org.testcontainers:testcontainers")')
+        template.contains('testImplementation "org.testcontainers:postgresql"')
+        template.contains('testImplementation "org.testcontainers:testcontainers"')
     }
 
     void "test sqlserver dependency is present for gradle"() {
@@ -38,8 +38,8 @@ class TestContainersSpec extends ApplicationContextSpec {
                 .render()
 
         then:
-        template.contains('testImplementation("org.testcontainers:mssqlserver")')
-        template.contains('testImplementation("org.testcontainers:testcontainers")')
+        template.contains('testImplementation "org.testcontainers:mssqlserver"')
+        template.contains('testImplementation "org.testcontainers:testcontainers"')
     }
 
     void "test mongo-sync dependency is present for gradle"() {
@@ -49,8 +49,8 @@ class TestContainersSpec extends ApplicationContextSpec {
                 .render()
 
         then:
-        template.contains('testImplementation("org.testcontainers:mongodb")')
-        template.contains('testImplementation("org.testcontainers:testcontainers")')
+        template.contains('testImplementation "org.testcontainers:mongodb"')
+        template.contains('testImplementation "org.testcontainers:testcontainers"')
     }
 
     void "test mongo-gorm dependency is present for gradle"() {
@@ -60,8 +60,8 @@ class TestContainersSpec extends ApplicationContextSpec {
                 .render()
 
         then:
-        template.contains('testImplementation("org.testcontainers:mongodb")')
-        template.contains('testImplementation("org.testcontainers:testcontainers")')
+        template.contains('testImplementation "org.testcontainers:mongodb"')
+        template.contains('testImplementation "org.testcontainers:testcontainers"')
     }
 
     void "test testcontainers core is present when no testcontainer modules are present for gradle"() {
@@ -71,7 +71,7 @@ class TestContainersSpec extends ApplicationContextSpec {
                 .render()
 
         then:
-        template.contains('testImplementation("org.testcontainers:testcontainers")')
+        template.contains('testImplementation "org.testcontainers:testcontainers"')
     }
 
     void "testframework dependency is present for gradle for feature #feature and spock framework"() {
@@ -82,7 +82,7 @@ class TestContainersSpec extends ApplicationContextSpec {
                 .render()
 
         then:
-        template.contains('testImplementation("org.testcontainers:spock")')
+        template.contains('testImplementation "org.testcontainers:spock"')
 
         where:
         feature << ["mongo-sync", "mysql", "postgres", "sqlserver"]
@@ -97,7 +97,7 @@ class TestContainersSpec extends ApplicationContextSpec {
                 .render()
 
         then:
-        template.contains('testImplementation("org.testcontainers:junit-jupiter")')
+        template.contains('testImplementation "org.testcontainers:junit-jupiter"')
 
         where:
         feature << ["mongo-sync", "mysql", "postgres", "sqlserver"]

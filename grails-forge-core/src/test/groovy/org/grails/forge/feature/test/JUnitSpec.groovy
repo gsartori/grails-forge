@@ -15,6 +15,6 @@ class JUnitSpec extends ApplicationContextSpec implements CommandOutputFixture {
         final String buildGradle = output["build.gradle"]
 
         then:
-        buildGradle.contains("testImplementation(\"org.junit.jupiter:junit-jupiter")
+        buildGradle.contains("testImplementation \"org.junit.jupiter:junit-jupiter")
     }
 }

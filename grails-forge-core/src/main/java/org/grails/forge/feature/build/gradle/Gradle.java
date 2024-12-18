@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 original authors
+ * Copyright 2017-2024 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,9 +28,7 @@ import org.grails.forge.feature.Feature;
 import org.grails.forge.feature.build.BuildFeature;
 import org.grails.forge.feature.build.gitignore;
 import org.grails.forge.feature.build.gradle.templates.buildGradle;
-import org.grails.forge.feature.build.gradle.templates.buildSrcBuildGradle;
 import org.grails.forge.feature.build.gradle.templates.gradleProperties;
-import org.grails.forge.feature.build.gradle.templates.settingsGradle;
 import org.grails.forge.feature.build.gradle.templates.gradleWrapperProperties;
 import org.grails.forge.options.BuildTool;
 import org.grails.forge.options.Options;
@@ -73,14 +71,6 @@ public class Gradle implements BuildFeature {
         BuildTool buildTool = BuildTool.DEFAULT_OPTION;
         GradleBuild build = dependencyResolver.create(generatorContext);
 
-        generatorContext.addTemplate("buildSrc/build", new RockerTemplate("buildSrc/" + buildTool.getBuildFileName(), buildSrcBuildGradle.template(
-                generatorContext.getApplicationType(),
-                generatorContext.getProject(),
-                generatorContext.getFeatures(),
-                build
-        )));
-
-
         final Function<String, Coordinate> coordinateResolver = (artifactId) -> resolver.resolve(artifactId).orElseThrow(() -> new LookupFailedException(artifactId));
         generatorContext.addTemplate("build", new RockerTemplate(buildTool.getBuildFileName(), buildGradle.template(
                 generatorContext.getApplicationType(),
@@ -93,8 +83,6 @@ public class Gradle implements BuildFeature {
         configureDefaultGradleProps(generatorContext);
         generatorContext.addTemplate("gitignore", new RockerTemplate(".gitignore", gitignore.template()));
         generatorContext.addTemplate("projectProperties", new RockerTemplate("gradle.properties", gradleProperties.template(generatorContext.getBuildProperties().getProperties())));
-        String settingsFile = "settings.gradle";
-        generatorContext.addTemplate("gradleSettings", new RockerTemplate(settingsFile, settingsGradle.template(generatorContext.getProject(), build, coordinateResolver, generatorContext.getFeatures())));
 
         generatorContext.addTemplate("gradleWrapperProperties", new RockerTemplate(WRAPPER_PROPS, gradleWrapperProperties.template(generatorContext.getProject(), build, coordinateResolver, generatorContext.getFeatures())));
     }
