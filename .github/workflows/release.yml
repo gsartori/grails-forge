@@ -55,6 +55,7 @@ jobs:
           SECRING_FILE: ${{ secrets.SECRING_FILE }}
         run: echo $SECRING_FILE | base64 -d > ${{ github.workspace }}/secring.gpg
       - name: "📤 Publish to Sonatype OSSRH"
+        if: false # skip to regenerate linux native binary
         env:
           DEVELOCITY_BUILD_CACHE_NODE_USER: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER }}
           DEVELOCITY_BUILD_CACHE_NODE_KEY: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_KEY }}
