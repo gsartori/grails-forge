@@ -131,8 +131,6 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: "🐘 Setup Gradle"
         uses: gradle/actions/setup-gradle@v4
-      - name: "📸 Build the Native Image (with libc=musl)"
-        run: ./gradlew grails-cli:nativeCompile --no-daemon -Pmusl
       - name: "📸 Build the Native Image"
         env:
           DEVELOCITY_BUILD_CACHE_NODE_USER: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER }}
