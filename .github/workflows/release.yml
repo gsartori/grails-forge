@@ -334,7 +334,7 @@ jobs:
           GVM_SDKVENDOR_KEY: ${{ secrets.GVM_SDKVENDOR_KEY }}
           GVM_SDKVENDOR_TOKEN: ${{ secrets.GVM_SDKVENDOR_TOKEN }}
       - name: "🚀 Grails SDK Major Release"
-        if: startsWith(needs.build.outputs.release_version, '6.') && !contains(needs.build.outputs.release_version, 'M')
+        if: startsWith(needs.build.outputs.release_version, '7.') && !contains(needs.build.outputs.release_version, 'M')
         run: ./gradlew sdkMajorRelease
         env:
           DEVELOCITY_BUILD_CACHE_NODE_USER: ${{ secrets.GRADLE_ENTERPRISE_BUILD_CACHE_NODE_USER }}
