@@ -4,9 +4,9 @@ plugins {
 }
 
 Properties properties = new Properties()
-FileInputStream input = new FileInputStream(file('../gradle.properties'))
-properties.load(input)
-input.close()
+file('../gradle.properties').withInputStream { input ->
+    properties.load(input)
+}
 
 for (String key : properties.stringPropertyNames()) {
     ext.set(key, properties.getProperty(key))
