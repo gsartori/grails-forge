@@ -72,12 +72,16 @@ repositories {
 
 @dependencies.template(applicationType, project, features, gradleBuild)
 
+@if(features.contains("asset-pipeline-grails")) {
 // exclude org.graalvm dependencies which are required by asset-pipeline-core
 // for bootRun but are not required in the deployed war/jar
+// see:  https://github.com/grails/grails-core/pull/13971
 tasks.named { it in ['bootWar', 'bootJar', 'war'] }.configureEach {
     classpath = classpath.findAll {
         !it.toString().contains('org.graalvm.')
     }
+}
+
 }
 
 @if(features.contains("geb-with-webdriver-binaries")) {
